@@ -5,7 +5,8 @@ import ArticleCard from '../components/ArticleCard.astro';
 import Cover from '../components/Cover.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import { loadArticles } from '../lib/articles';
-import { allComparisons, formatKm, formatTry } from '../lib/comparisons';
+import { allComparisons } from '../lib/comparisons';
+import CompareCard from '../components/CompareCard.astro';
 import { adSlotIds, coverTone, pageMeta, slogan } from '../lib/site';
 import { formatNewsStamp, istanbulDay, istanbulIso } from '../lib/dates';
 import { faqs } from '../data/faq';
@@ -164,12 +165,7 @@ const description = pageMeta('home');
       <div class="grid gap-5 md:grid-cols-3">
         {
           pairs.map((pair) => (
-            <a href={pair.href} class="compare-card card card-link block p-6 text-inherit hover:text-inherit">
-              <p class="tag m-0">Karşılaştırma</p>
-              <h3 class="mt-2 mb-3">{pair.a.name} / {pair.b.name}</h3>
-              <p class="m-0">{pair.a.name}: <span class="num">{pair.a.priceTry == null ? '[fiyat]' : formatTry(pair.a.priceTry)}{pair.a.rangeKm == null ? '' : ` · ${formatKm(pair.a.rangeKm)}`}</span></p>
-              <p class="mt-2 mb-0">{pair.b.name}: <span class="num">{pair.b.priceTry == null ? '[fiyat]' : formatTry(pair.b.priceTry)}{pair.b.rangeKm == null ? '' : ` · ${formatKm(pair.b.rangeKm)}`}</span></p>
-            </a>
+            <CompareCard pair={pair} heading="h3" />
           ))
         }
       </div>

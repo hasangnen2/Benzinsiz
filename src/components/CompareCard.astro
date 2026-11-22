@@ -1,0 +1,38 @@
+---
+import { formatKm, formatTry } from '../lib/comparisons';
+import type { Car, ComparisonPair } from '../lib/comparisons';
+
+interface Props {
+  pair: ComparisonPair;
+  heading?: 'h2' | 'h3';
+}
+
+const { pair, heading = 'h2' } = Astro.props;
+const Tag = heading;
+
+function figures(car: Car) {
+  return {
+    price: car.priceTry == null ? 'Fiyat kaydı yok' : formatTry(car.priceTry),
+    range: car.rangeKm == null ? null : formatKm(car.rangeKm),
+  };
+}
+
+const left = figures(pair.a);
+const right = figures(pair.b);
+---
+
+<a href={pair.href} class="compare-card card card-link block p-6 text-inherit hover:text-inherit">
+  <p class="tag m-0">Karşılaştırma</p>
+  <Tag class="compare-pair">
+    <span>
+      <span class="who">{pair.a.name}</span>
+      <span class="num">{left.price}</span>
+      {left.range && <span class="range">{left.range}</span>}
+    </span>
+    <span>
+      <span class="who">{pair.b.name}</span>
+      <span class="num">{right.price}</span>
+      {right.range && <span class="range">{right.range}</span>}
+    </span>
+  </Tag>
+</a>

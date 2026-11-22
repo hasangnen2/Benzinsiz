@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { allComparisons, formatKm, formatTry } from '../../lib/comparisons';
+import CompareCard from '../../components/CompareCard.astro';
+import { allComparisons } from '../../lib/comparisons';
 import { pageMeta } from '../../lib/site';
 
 const pairs = allComparisons();
@@ -16,18 +17,9 @@ const description = pageMeta('karsilastir');
   <main id="icerik" class="compare wrap py-8" tabindex="-1" data-pagefind-body>
     <Breadcrumb crumbs={crumbs} />
     <h1 class="mb-3">Karşılaştırma</h1>
-    <p class="compare-lead">{description} Ters yazılan adres, kalıcı sıraya 301 ile döner.</p>
+    <p class="compare-lead">Her kartta iki model alt alta. Adın altında fiyat var. Menzil kaynakta yazıyorsa fiyatın altında durur.</p>
     <div class="grid gap-5 md:grid-cols-3">
-      {
-        pairs.map((pair) => (
-          <a href={pair.href} class="compare-card card card-link block p-6 text-inherit hover:text-inherit">
-            <p class="tag m-0">Karşılaştırma</p>
-            <h2 class="mt-2 mb-3">{pair.a.name} ve {pair.b.name}</h2>
-            <p class="m-0">{pair.a.name}: <span class="num">{pair.a.priceTry == null ? '[fiyat]' : formatTry(pair.a.priceTry)}{pair.a.rangeKm == null ? '' : ` · ${formatKm(pair.a.rangeKm)}`}</span></p>
-            <p class="mt-2 mb-0">{pair.b.name}: <span class="num">{pair.b.priceTry == null ? '[fiyat]' : formatTry(pair.b.priceTry)}{pair.b.rangeKm == null ? '' : ` · ${formatKm(pair.b.rangeKm)}`}</span></p>
-          </a>
-        ))
-      }
+      {pairs.map((pair) => <CompareCard pair={pair} />)}
     </div>
   </main>
 </BaseLayout>

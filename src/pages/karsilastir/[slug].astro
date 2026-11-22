@@ -46,8 +46,11 @@ const rows: { label: string; placeholder: string; render: (car: Car) => string |
   <main id="icerik" class="compare wrap py-8" tabindex="-1" data-pagefind-body>
     <Breadcrumb crumbs={crumbs} />
     <p class="tag m-0">Karşılaştırma</p>
-    <h1 class="mt-2 mb-3">{pair.title}</h1>
-    <p class="compare-lead">{pair.description} Her fiyat, kendi kaynağındaki anahtar teslim tanımdır. Dahil olmayan kalem araç notunda yazar.</p>
+    <h1 class="compare-title mt-2 mb-3">
+      <span>{pair.a.name}</span>
+      <span>{pair.b.name}</span>
+    </h1>
+    <p class="compare-lead">Fiyat, markanın kendi listesindeki anahtar teslim rakamdır. Kaynakta yazmayan menzil boş kalır. Eksik kalem araç notunda yazar.</p>
     <p class="compare-note">
       Güncelleme:{' '}
       {updated ? <time datetime={istanbulIso(updated)}>{formatDate(updated)}</time> : <Placeholder label="güncelleme tarihi" />}
