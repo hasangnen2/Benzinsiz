@@ -1,0 +1,268 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import Cover from '../components/Cover.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import { loadArticles } from '../lib/articles';
+import { allComparisons } from '../lib/comparisons';
+import { adSlotIds, coverTone, pageMeta, slogan } from '../lib/site';
+import { formatNewsStamp, istanbulDay, istanbulIso } from '../lib/dates';
+import { faqs } from '../data/faq';
+
+const articles = await loadArticles();
+const featured = articles.find((item) => item.featured) ?? articles.find((item) => item.type === 'rehber') ?? articles[0];
+const news = articles.filter((item) => item.type === 'haber').slice(0, 5);
+const guides = articles.filter((item) => item.type === 'rehber').slice(0, 3);
+const shown = new Set([featured?.href, ...news.map((item) => item.href)].filter((href): href is string => Boolean(href)));
+const todayItems = articles.filter((item) => !shown.has(item.href)).slice(0, 4);
+const hasToday = todayItems.some((item) => istanbulDay(item.publishedAt) === istanbulDay(new Date()));
+const prefetchRules = JSON.stringify({
+  prefetch: [{ source: 'list', urls: featured ? [featured.href] : [], eagerness: 'moderate' }],
+});
+const pairs = allComparisons().slice(0, 3);
+const paths = [
+  {
+    href: '/rehber/elektrikli-arac-almadan-once',
+    kicker: 'Satın alma',
+    title: 'İlk elektrikli aracını mı düşünüyorsun?',
+    text: 'On kontrol başlığını aç. Rakam yoksa o satır boş kalır.',
+  },
+  {
+    href: '/kategori/sarj',
+    kicker: 'Şarj',
+    title: 'Şarjı ev ve istasyon diye ayır',
+    text: 'Kurulum adımı ve tarife satırı aynı yerde listelenir.',
+  },
+  {
+    href: '/karsilastir',
+    kicker: 'Karşılaştırma',
+    title: 'Modelleri yan yana koy',
+    text: 'Fiyat, menzil ve şarj. Boş hücre köşeli parantezdir.',
+  },
+];
+const steps = [
+  { n: '01', title: 'İhtiyacı yaz', text: 'Günlük yol, evde şarj imkânı ve bütçe kalemini ayır.' },
+  { n: '02', title: 'Kaynağı aç', text: 'Menzil için üretici sayfası, tarife için fatura veya resmi cetvel.' },
+  { n: '03', title: 'Resmi fiyatı kullan', text: 'Ev tarifesi ve yakıt ortalaması kayıtlıdır. İstasyon ve pompa fiyatını sen yazarsın.' },
+  { n: '04', title: 'Boş hücreyi boş oku', text: 'Parantez, o ölçütte karşılaştırma olmadığı anlamına gelir.' },
+];
+const trust = [
+  { title: 'Kaynak satırı', text: 'Rakam, kaynağıyla durur.' },
+  { title: 'Görünür tarih', text: 'Yayın ve güncelleme yazının üstündedir.' },
+  { title: 'Etiketli reklam', text: 'Reklam alanı “Reklam” diye işaretlidir.' },
+  { title: 'Düzeltme yolu', text: 'Yanlış görürsen iletişimden yazarsın.' },
+];
+const faqGraph = {
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+const description = pageMeta('home');
+---
+
+<BaseLayout title={slogan} description={description} extraGraph={[faqGraph]}>
+  {featured && <script is:inline type="speculationrules" set:html={prefetchRules} />}
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <form class="mb-6 flex flex-col gap-2 sm:flex-row" action="/ara" method="get" role="search">
+      <label class="sr-only" for="home-q">Sitede ara</label>
+      <input id="home-q" class="min-h-11 w-full min-w-0 flex-1 rounded-md border border-line bg-white px-3" name="q" type="search" placeholder="Rehber, haber veya model ara" required />
+      <button class="btn" type="submit">Ara</button>
+    </form>
+
+    {
+      featured && (
+        <section class="grid items-start gap-7 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
+          <article class="card">
+            <a href={featured.href} class="block text-inherit hover:text-inherit" tabindex="-1" aria-hidden="true">
+              <Cover image={featured.heroImage} alt="" tone={coverTone(featured.categorySlug)} hero priority />
+            </a>
+            <div class="px-6 py-6 sm:px-7 sm:py-7">
+              <p class="tag m-0">{featured.typeLabel}</p>
+              <h1 class="mt-2 mb-3 font-serif text-[2rem] leading-tight font-bold sm:text-[2.375rem]">
+                <a href={featured.href}>{featured.title}</a>
+              </h1>
+              <p class="m-0 mb-4 text-[1.0625rem] leading-relaxed text-muted">{featured.description}</p>
+              <p class="m-0 text-sm text-meta">{featured.authorName} · {featured.minutes} dk okuma</p>
+            </div>
+          </article>
+          <aside class="card px-5 py-5">
+            <div class="section-head">
+              <h2>Son haberler</h2>
+            </div>
+            {news.length === 0 ? (
+              <p class="m-0 text-muted">Henüz haber yok. Yeni haberler yayımlanınca burada listelenir.</p>
+            ) : (
+              <ul class="m-0 list-none p-0">
+                {news.map((item) => (
+                  <li class="flex gap-3 border-b border-line py-3 last:border-b-0">
+                    {item.breaking ? <span class="breaking">Son dakika</span> : <time class="min-w-12 text-sm font-semibold text-meta" datetime={istanbulIso(item.publishedAt)}>{formatNewsStamp(item.publishedAt)}</time>}
+                    <a class="font-medium leading-snug" href={item.href}>{item.title}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </aside>
+        </section>
+      )
+    }
+
+    {adSlotIds.homeTop && (
+      <div class="my-9" data-pagefind-ignore>
+        <AdSlot slot={adSlotIds.homeTop} height={90} label="Reklam alanı · 728×90" format="horizontal" />
+      </div>
+    )}
+
+    <section class="mb-8 lg:mb-12">
+      <div class="section-head"><h2>Üç başlangıç yolu</h2></div>
+      <div class="grid gap-5 md:grid-cols-3">
+        {
+          paths.map((item) => (
+            <a href={item.href} class="card card-link block p-6 text-inherit hover:text-inherit">
+              <p class="tag m-0">{item.kicker}</p>
+              <h3 class="mt-2 mb-2 text-[1.15rem]">{item.title}</h3>
+              <p class="m-0 text-muted">{item.text}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    {todayItems.length > 0 && (
+    <section class="mb-8 lg:mb-12">
+      <div class="section-head">
+        <h2>Bugün bilmen gerekenler</h2>
+      </div>
+      <p class="mt-0 text-sm text-meta">{hasToday ? 'Bugün yayımlanan yazılardan.' : 'Son yayımlanan yazılardan. Bugünün tarihiyle karıştırma.'}</p>
+      <ul class="m-0 list-none p-0">
+        {
+          todayItems.map((item) => (
+            <li class="border-b border-line py-3">
+              <a class="font-semibold" href={item.href}>{item.title}</a>
+              <p class="m-0 text-muted">{item.summary[0]}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+    )}
+
+    {adSlotIds.homeMid && (
+      <div class="mb-8 lg:mb-12" data-pagefind-ignore>
+        <AdSlot slot={adSlotIds.homeMid} height={250} label="Reklam alanı · 300×250" format="rectangle" />
+      </div>
+    )}
+
+    <section class="mb-8 lg:mb-12">
+      <div class="section-head">
+        <h2>Popüler karşılaştırmalar</h2>
+        <a class="text-sm font-semibold text-petrol" href="/karsilastir">Tümünü gör</a>
+      </div>
+      <div class="grid gap-5 md:grid-cols-3">
+        {
+          pairs.map((pair) => (
+            <a href={pair.href} class="card card-link block p-6 text-inherit hover:text-inherit">
+              <p class="tag m-0">Karşılaştırma</p>
+              <h3 class="mt-2 mb-2 font-serif text-xl">{pair.a.name} / {pair.b.name}</h3>
+              <p class="m-0 text-muted">
+                {pair.a.priceTry == null && pair.b.priceTry == null && pair.a.rangeKm == null && pair.b.rangeKm == null
+                  ? 'Fiyat ve menzil kaydı boş. Hücreler köşeli parantezde.'
+                  : 'Kayıtlı ölçütler sayfada yan yana.'}
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mb-8 lg:mb-12">
+      <div class="section-head">
+        <h2>Araçlar</h2>
+        <a class="text-sm font-semibold text-petrol" href="/arac">Tümünü gör</a>
+      </div>
+      <div class="grid gap-5 md:grid-cols-3">
+        <a href="/arac/hesaplayici" class="card card-link block p-6 text-inherit hover:text-inherit">
+          <p class="tag m-0">Hesaplayıcı</p>
+          <h3 class="mt-2 mb-2 text-[1.15rem]">Şarj maliyeti hesaplayıcı</h3>
+          <p class="m-0 text-muted">Evde 100 km’yi 4 Nisan 2026 mesken kademesiyle hesapla. İstasyon fiyatını sen yazarsın.</p>
+        </a>
+        <a href="/arac/rota" class="card card-link block p-6 text-inherit hover:text-inherit">
+          <p class="tag m-0">Planlayıcı</p>
+          <h3 class="mt-2 mb-2 text-[1.15rem]">Menzil ve rota planlayıcı</h3>
+          <p class="m-0 text-muted">Kullanılabilir menzilinle mola sayısını ve varışta kalan kilometreyi gör.</p>
+        </a>
+        <a href="/arac/yakit" class="card card-link block p-6 text-inherit hover:text-inherit">
+          <p class="tag m-0">Karşılaştırma</p>
+          <h3 class="mt-2 mb-2 text-[1.15rem]">Benzinli mi, elektrikli mi?</h3>
+          <p class="m-0 text-muted">Yıllık gideri resmi elektrik ve yakıt fiyatıyla yan yana koy. Bakım boşsa toplama katılmaz.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="mb-8 lg:mb-12">
+      <div class="section-head">
+        <h2>Rehberler</h2>
+        <a class="text-sm font-semibold text-petrol" href="/rehber">Tüm rehberler</a>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        {guides.map((article) => <ArticleCard article={article} />)}
+      </div>
+    </section>
+
+    <section class="mb-8 lg:mb-12">
+      <div class="section-head"><h2>Dört adım</h2></div>
+      <ol class="m-0 grid list-none gap-5 p-0 md:grid-cols-4">
+        {
+          steps.map((step) => (
+            <li class="card p-5">
+              <p class="m-0 font-serif text-2xl text-petrol">{step.n}</p>
+              <h3 class="mt-2 mb-2 text-lg">{step.title}</h3>
+              <p class="m-0 text-muted">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="mb-12 rounded-[10px] bg-navy px-6 py-6 text-cream on-dark" aria-label="Güven">
+      <h2 class="mt-0 font-serif text-2xl text-cream">Nasıl okursun</h2>
+      <ul class="m-0 grid list-none gap-4 p-0 md:grid-cols-4">
+        {
+          trust.map((item) => (
+            <li>
+              <p class="m-0 font-semibold text-mint">{item.title}</p>
+              <p class="m-0 text-sm text-fog">{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section aria-labelledby="sss">
+      <div class="section-head"><h2 id="sss">Sık sorulan sorular</h2></div>
+      <div class="grid gap-3">
+        {
+          faqs.map((item) => (
+            <details class="card px-5">
+              <summary class="flex min-h-11 cursor-pointer items-center font-semibold">{item.question}</summary>
+              <p class="mt-0 text-muted">{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <section id="bulten" class="newsletter bg-navy text-cream on-dark" aria-label="Bülten">
+    <div class="wrap flex flex-wrap items-center justify-between gap-8 py-11">
+      <div class="min-w-0 flex-1 basis-full sm:basis-auto">
+        <h2 class="mt-0 mb-2 font-serif text-[1.75rem] text-cream">Elektrikli dünyadan haftalık özet</h2>
+        <p class="m-0 text-fog">Her hafta önemli haberleri ve yeni rehberleri e-postana gönderelim.</p>
+      </div>
+      <NewsletterForm />
+    </div>
+  </section>
+</BaseLayout>

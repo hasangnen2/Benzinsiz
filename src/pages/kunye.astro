@@ -1,0 +1,42 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { authors, contactEmail, pageMeta, slogan } from '../lib/site';
+const email = contactEmail();
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Künye', href: '/kunye' },
+];
+---
+
+<PageLayout title="Künye" description={pageMeta('kunye')} crumbs={crumbs}>
+  <p>Bu sayfa yayının kimlik kartıdır. Dolu satırlar yayının işleyişidir. Köşeli parantez, henüz belgeye bağlanmamış tüzel bilgidir ve tahminle doldurulmaz.</p>
+  <h2>Yayın</h2>
+  <ul>
+    <li>Yayın adı: Benzinsiz</li>
+    <li>Slogan: {slogan}</li>
+    <li>Tür: Elektrikli araç haberi, rehberi ve karşılaştırması</li>
+    <li>Dil: Türkçe</li>
+    <li>Yayın ortamı: Web</li>
+    <li>Periyot: Sürekli güncellenen ağ yayını</li>
+  </ul>
+  <h2>Tüzel bilgiler</h2>
+  <ul>
+    <li>Ticari unvan: <span class="missing">[ticari unvan]</span></li>
+    <li>Adres: <span class="missing">[adres]</span></li>
+    <li>MERSİS: <span class="missing">[MERSİS]</span></li>
+    <li>Sorumlu yazı işleri müdürü: <span class="missing">[ad soyad]</span></li>
+    <li>KEP: <span class="missing">[KEP]</span></li>
+    <li>İletişim: {email ? <a href={`mailto:${email}`}>{email}</a> : <span class="missing">[e-posta adresi]</span>}</li>
+  </ul>
+  <h2>Kadro</h2>
+  <ul>
+    {authors.map((author) => (
+      <li>
+        <a href={`/yazar/${author.slug}`}>{author.name}</a>, {author.jobTitle}. {author.duty}
+      </li>
+    ))}
+  </ul>
+  <p>Beş görev, işbölümünün adıdır. Kişinin adı ve soyadı bu satıra yazılınca ilgili yazar sayfasının adresi değişmez. Eski bir yazar adresi kapanırsa 301 ile yeni adrese bağlanır.</p>
+  <p>Ortak imza, henüz bir göreve ayrılmamış yayımlanmış metinler içindir. Yeni metin hangi masadan çıktıysa o masanın imzasına geçer.</p>
+  <p><a href="/yazar">Editör kadrosu</a> · <a href="/yayin-ilkeleri">Yayın ilkeleri</a> · <a href="/duzeltme-politikasi">Düzeltme politikası</a> · <a href="/reklam-politikasi">Reklam politikası</a></p>
+</PageLayout>

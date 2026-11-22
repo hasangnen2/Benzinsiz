@@ -1,0 +1,134 @@
+---
+import tariffs from '../data/tariffs.json';
+import { formatDate } from '../lib/dates';
+
+const rate = new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 6 });
+const priced = tariffs.items.filter((item) => item.pricePerKwhTry != null);
+const open = tariffs.items.filter((item) => item.pricePerKwhTry == null);
+const updated = tariffs.updatedAt ? formatDate(new Date(tariffs.updatedAt)) : '';
+---
+
+<ul>
+  {
+    priced.map((item) => (
+      <li>
+        {item.name}: {rate.format(item.pricePerKwhTry ?? 0)} TL/kWh. {item.note}
+      </li>
+    ))
+  }
+</ul>
+<p>
+  Bu iki fiyat, mesken alçak gerilim tek terimli tek zamanlı tarifedir ve KDV dahildir. Kr/kWh sütunu 100’e bölündü.
+  Sınır, fatura gün sayısı çarpı 8 kWh’tir. Yalnızca aşan kısım yüksek kademededir. Dağıtım bedeli her kWh’de aynıdır ve fiyata dahildir.
+  Araç faturayı ikiye bölmez: seçtiğin fiyat, hesapladığın bütün kWh’ye uygulanır. Evin günlük ortalaması 8 kWh’yi zaten aşıyorsa şarjın yüksek kademededir.
+</p>
+<p>
+  Kaynak:
+  <a href={tariffs.source.url} rel="noopener noreferrer">{tariffs.source.name}</a>
+  {updated ? <span> · <time datetime={tariffs.updatedAt ?? undefined}>{updated}</time></span> : null}
+</p>
+<p>
+  Halka açık AC ve DC için ülke geneli tek fiyat yoktur. İstasyon fiyatı, aktarılan enerjinin TL/kWh bedelidir.
+  Ayrıntı <a href="/rehber/sarj-hizmeti-fiyat-kurallari">şarj hizmeti fiyat kurallarında</a>.
+</p>
+
+<form id="charge-form" class="grid gap-4">
+  <div class="field">
+    <label for="tariff">Tarife</label>
+    <select id="tariff" name="tariff">
+      <option value="">Fiyatı ben yazacağım</option>
+      {
+        tariffs.items.map((item) => (
+          <option value={item.id} disabled={item.pricePerKwhTry == null}>
+            {item.pricePerKwhTry == null
+              ? `${item.name} — fiyat yok`
+              : `${item.name} — ${rate.format(item.pricePerKwhTry)} TL/kWh`}
+          </option>
+        ))
+      }
+    </select>
+  </div>
+  <div class="field">
+    <label for="price">Kendi kWh fiyatın (TL)</label>
+    <input id="price" name="price" inputmode="decimal" autocomplete="off" placeholder="İstasyon veya fatura fiyatı" />
+  </div>
+  <div class="field">
+    <label for="consumption">Tüketim (kWh/100 km)</label>
+    <input id="consumption" name="consumption" inputmode="decimal" autocomplete="off" placeholder="Sayaç ya da araç değeri" />
+  </div>
+  <div class="field">
+    <label for="loss">Şarj kaybı, isteğe bağlı (%)</label>
+    <input id="loss" name="loss" inputmode="decimal" autocomplete="off" placeholder="Boşsa kayıp eklenmez" />
+  </div>
+  <div class="field">
+    <label for="distance">Mesafe, isteğe bağlı (km)</label>
+    <input id="distance" name="distance" inputmode="decimal" autocomplete="off" placeholder="Boşsa yalnız 100 km" />
+  </div>
+  <button class="btn w-fit" type="submit">Hesapla</button>
+</form>
+<p class="mt-4 text-sm text-muted">
+  Tüketim sayaçtan çekilen kWh ise kaybı boş bırak. Rakam araç bilgisayarındaysa kaybı sen yaz. Kayıp yüzdesi uydurulmaz.
+  {' '}
+  {open.map((item) => item.name).join(', ')} satırları bu yüzden kapalıdır.
+</p>
+<div class="result mt-4" role="status" aria-live="polite" id="charge-result">
+  <p class="m-0">100 km maliyeti = sayaca yansıyan tüketim × fiyat. Yol maliyeti = (mesafe ÷ 100) × aynı çarpım.</p>
+</div>
+
+<script>
+  import tariffs from '../data/tariffs.json';
+  import { energyCost, meteredPer100 } from '../scripts/cost';
+  import { formatMoney, formatRate, parseNum, parseOptional } from '../scripts/numbers';
+
+  const form = document.querySelector<HTMLFormElement>('#charge-form');
+  const result = document.querySelector<HTMLElement>('#charge-result');
+  if (form && result) {
+    const run = () => {
+      const data = new FormData(form);
+      const typed = parseNum(String(data.get('price') || ''));
+      const tariff = tariffs.items.find((item) => item.id === String(data.get('tariff') || ''));
+      const filePrice = tariff?.pricePerKwhTry ?? null;
+      const price = typed ?? (filePrice && filePrice > 0 ? filePrice : null);
+      const consumption = parseNum(String(data.get('consumption') || ''));
+      const loss = parseOptional(String(data.get('loss') || ''));
+      const distanceRaw = String(data.get('distance') || '');
+      const distance = distanceRaw.trim() ? parseNum(distanceRaw) : null;
+      result.replaceChildren();
+      const add = (text: string) => {
+        const p = document.createElement('p');
+        p.className = 'm-0';
+        p.textContent = text;
+        result.append(p);
+      };
+      if (loss === 'invalid' || (typeof loss === 'number' && loss >= 100)) {
+        add('Şarj kaybı boş kalabilir. Yazarsan 0 ile 100 arasında, 100’den küçük bir yüzde olmalı.');
+        return;
+      }
+      if (price == null) {
+        add('Fiyat yok. Listeden kademe seç veya istasyonun TL/kWh fiyatını yaz. Kapalı satırların ülke geneli fiyatı yok.');
+        return;
+      }
+      if (consumption == null) {
+        add('Tüketimi kWh/100 km olarak yaz.');
+        return;
+      }
+      const metered = meteredPer100(consumption, loss);
+      const per100 = energyCost(metered, price, 100);
+      const priceText = `${formatRate(price)} TL/kWh`;
+      if (loss != null && loss > 0) {
+        add(`Sayaca yansıyan tüketim: ${formatRate(metered)} kWh/100 km. ${formatRate(consumption)} ÷ ${formatRate(1 - loss / 100)}.`);
+      }
+      add(`100 km: ${formatMoney(per100)}. ${formatRate(metered)} kWh/100 km × ${priceText}.`);
+      if (distanceRaw.trim()) {
+        if (distance == null) add('Mesafe sıfırdan büyük bir sayı olmalı.');
+        else add(`${formatRate(distance)} km: ${formatMoney(energyCost(metered, price, distance))}.`);
+      }
+      add(typed != null ? 'Hesap, yazdığın fiyata göredir.' : `Hesap, “${tariff?.name ?? 'tarife'}” fiyatına göredir. ${tariff?.note ?? ''}`);
+    };
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      run();
+    });
+    form.addEventListener('input', run);
+  }
+</script>

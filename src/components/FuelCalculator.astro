@@ -1,0 +1,150 @@
+---
+import tariffs from '../data/tariffs.json';
+
+const rate = new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 6 });
+const fuelSource = tariffs.fuels[0]?.source;
+---
+
+<ul>
+  {
+    tariffs.fuels.map((item) => (
+      <li>
+        {item.name}: {rate.format(item.pricePerLitreTry)} TL/l. {item.source.name}.
+      </li>
+    ))
+  }
+</ul>
+<p>
+  Bu ikisi ilindeki pompa fiyatı değildir. En yüksek işlem hacimli sekiz firmanın o günkü ortalama bayi fiyatıdır.
+  Pompan farklıysa litre fiyatını sen yaz. Kaynak:
+  {fuelSource ? <a href={fuelSource.url} rel="noopener noreferrer">{fuelSource.name}</a> : null}
+</p>
+
+<form id="fuel-form" class="grid gap-4 md:grid-cols-2">
+  <div class="field">
+    <label for="annual">Yıllık yol (km)</label>
+    <input id="annual" name="annual" inputmode="decimal" autocomplete="off" placeholder="Örnek yazılmaz" />
+  </div>
+  <div class="field">
+    <label for="ev-use">Elektrikli tüketim (kWh/100 km)</label>
+    <input id="ev-use" name="evUse" inputmode="decimal" autocomplete="off" />
+  </div>
+  <div class="field">
+    <label for="ev-tariff">Ev tarifesi</label>
+    <select id="ev-tariff" name="evTariff">
+      <option value="">Fiyatı ben yazacağım</option>
+      {
+        tariffs.items.map((item) => (
+          <option value={item.id} disabled={item.pricePerKwhTry == null}>
+            {item.pricePerKwhTry == null
+              ? `${item.name} — fiyat yok`
+              : `${item.name} — ${rate.format(item.pricePerKwhTry)} TL/kWh`}
+          </option>
+        ))
+      }
+    </select>
+  </div>
+  <div class="field">
+    <label for="ev-price">Elektrik fiyatı, yazarsan o geçerli (TL/kWh)</label>
+    <input id="ev-price" name="evPrice" inputmode="decimal" autocomplete="off" placeholder="Boşsa seçilen tarife" />
+  </div>
+  <div class="field">
+    <label for="ev-loss">Şarj kaybı, isteğe bağlı (%)</label>
+    <input id="ev-loss" name="loss" inputmode="decimal" autocomplete="off" placeholder="Boşsa kayıp eklenmez" />
+  </div>
+  <div class="field">
+    <label for="fuel-kind">Yakıt</label>
+    <select id="fuel-kind" name="fuelKind">
+      <option value="">Fiyatı ben yazacağım</option>
+      {
+        tariffs.fuels.map((item) => (
+          <option value={item.id}>{item.name} — {rate.format(item.pricePerLitreTry)} TL/l</option>
+        ))
+      }
+    </select>
+  </div>
+  <div class="field">
+    <label for="ice-use">Benzinli veya dizel tüketim (l/100 km)</label>
+    <input id="ice-use" name="iceUse" inputmode="decimal" autocomplete="off" />
+  </div>
+  <div class="field">
+    <label for="fuel-price">Litre fiyatı, yazarsan o geçerli (TL/l)</label>
+    <input id="fuel-price" name="fuelPrice" inputmode="decimal" autocomplete="off" placeholder="Boşsa seçilen ürün" />
+  </div>
+  <div class="field">
+    <label for="ev-care">Elektrikli bakım, isteğe bağlı (TL/yıl)</label>
+    <input id="ev-care" name="evCare" inputmode="decimal" autocomplete="off" placeholder="Boşsa toplama katılmaz" />
+  </div>
+  <div class="field">
+    <label for="ice-care">Yakıtlı bakım, isteğe bağlı (TL/yıl)</label>
+    <input id="ice-care" name="iceCare" inputmode="decimal" autocomplete="off" placeholder="Boşsa toplama katılmaz" />
+  </div>
+  <button class="btn w-fit" type="submit">Hesapla</button>
+</form>
+<div class="result mt-4" role="status" aria-live="polite" id="fuel-result">
+  <p class="m-0">100 km ve yıllık gider = (yol ÷ 100) × tüketim × birim fiyat. Bakım, iki tutar da yazılmazsa toplama katılmaz.</p>
+</div>
+
+<script>
+  import tariffs from '../data/tariffs.json';
+  import { energyCost, meteredPer100 } from '../scripts/cost';
+  import { formatMoney, formatRate, parseNum, parseOptional } from '../scripts/numbers';
+
+  const form = document.querySelector<HTMLFormElement>('#fuel-form');
+  const result = document.querySelector<HTMLElement>('#fuel-result');
+  if (form && result) {
+    const run = () => {
+      const data = new FormData(form);
+      const annual = parseNum(String(data.get('annual') || ''));
+      const evUse = parseNum(String(data.get('evUse') || ''));
+      const typedEv = parseNum(String(data.get('evPrice') || ''));
+      const tariff = tariffs.items.find((item) => item.id === String(data.get('evTariff') || ''));
+      const evPrice = typedEv ?? (tariff?.pricePerKwhTry && tariff.pricePerKwhTry > 0 ? tariff.pricePerKwhTry : null);
+      const loss = parseOptional(String(data.get('loss') || ''));
+      const iceUse = parseNum(String(data.get('iceUse') || ''));
+      const typedFuel = parseNum(String(data.get('fuelPrice') || ''));
+      const fuel = tariffs.fuels.find((item) => item.id === String(data.get('fuelKind') || ''));
+      const fuelPrice = typedFuel ?? (fuel?.pricePerLitreTry && fuel.pricePerLitreTry > 0 ? fuel.pricePerLitreTry : null);
+      const evCare = parseOptional(String(data.get('evCare') || ''));
+      const iceCare = parseOptional(String(data.get('iceCare') || ''));
+      result.replaceChildren();
+      const add = (text: string) => {
+        const p = document.createElement('p');
+        p.className = 'm-0';
+        p.textContent = text;
+        result.append(p);
+      };
+      if (loss === 'invalid' || (typeof loss === 'number' && loss >= 100) || evCare === 'invalid' || iceCare === 'invalid') {
+        add('Kayıp boş kalabilir ve 100’den küçük olmalı. Bakım boş kalabilir. Yazılan sayı sıfır veya daha büyük olmalı.');
+        return;
+      }
+      if (annual == null || evUse == null || evPrice == null || iceUse == null || fuelPrice == null) {
+        add('Yol, iki tüketim ve iki fiyat dolmadan sonuç yok. Fiyatı listeden seçebilir veya kendin yazabilirsin.');
+        return;
+      }
+      const metered = meteredPer100(evUse, loss);
+      const ev100 = energyCost(metered, evPrice, 100);
+      const ice100 = energyCost(iceUse, fuelPrice, 100);
+      const evYear = energyCost(metered, evPrice, annual);
+      const iceYear = energyCost(iceUse, fuelPrice, annual);
+      const lower = evYear === iceYear ? 'İki enerji gideri eşit.' : evYear < iceYear ? 'Enerji gideri elektrikte daha düşük.' : 'Enerji gideri yakıtta daha düşük.';
+      if (loss != null && loss > 0) add(`Sayaca yansıyan elektrik tüketimi: ${formatRate(metered)} kWh/100 km.`);
+      add(`100 km: elektrik ${formatMoney(ev100)}, yakıt ${formatMoney(ice100)}.`);
+      add(`Yıllık enerji: elektrik ${formatMoney(evYear)}, yakıt ${formatMoney(iceYear)}. Fark ${formatMoney(Math.abs(evYear - iceYear))}. ${lower}`);
+      add(`Elektrik ${formatRate(evPrice)} TL/kWh. ${typedEv != null ? 'Yazdığın fiyat.' : tariff?.name ?? ''}`);
+      add(`Yakıt ${formatRate(fuelPrice)} TL/l. ${typedFuel != null ? 'Yazdığın fiyat.' : fuel?.source.name ?? ''}`);
+      if (evCare == null || iceCare == null) add('Bakım toplama katılmadı.');
+      else {
+        const evAll = evYear + evCare;
+        const iceAll = iceYear + iceCare;
+        const lowerAll = evAll === iceAll ? 'Bakım dahil gider eşit.' : evAll < iceAll ? 'Bakım dahil gider elektrikte daha düşük.' : 'Bakım dahil gider yakıtta daha düşük.';
+        add(`Bakım dahil: elektrikli ${formatMoney(evAll)}, yakıtlı ${formatMoney(iceAll)}. ${lowerAll}`);
+      }
+    };
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      run();
+    });
+    form.addEventListener('input', run);
+  }
+</script>

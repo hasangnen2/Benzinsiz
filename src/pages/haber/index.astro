@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ContentList from '../../components/ContentList.astro';
+import { loadArticles, slicePage } from '../../lib/articles';
+import { pageMeta } from '../../lib/site';
+
+const all = (await loadArticles()).filter((item) => item.type === 'haber');
+const view = slicePage(all, 1);
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Haberler', href: '/haber' },
+];
+const description = pageMeta('haber');
+---
+
+<BaseLayout title="Haberler" description={description} crumbs={crumbs} next={view.totalPages > 1 ? '/haber/sayfa/2' : undefined}>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <h1 class="mb-3 font-serif text-4xl">Haberler</h1>
+    <p class="max-w-[68ch] text-muted">{description}</p>
+    <ContentList items={view.items} page={1} totalPages={view.totalPages} total={view.total} base="/haber" current="haber" />
+  </main>
+</BaseLayout>

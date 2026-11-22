@@ -1,0 +1,66 @@
+{
+  "updatedAt": "2026-04-04",
+  "source": {
+    "name": "EPDK Elektrik Piyasası Sektör Raporu, Mart 2026. Tablo: 04.04.2026 tarihinden itibaren geçerli tarifeler, KDV’li sütun.",
+    "url": "https://www.epdk.gov.tr/Detay/DownloadDocument?id=AHI7ackCfN4%3D"
+  },
+  "items": [
+    {
+      "id": "mesken-yuksek",
+      "name": "Ev, mesken tek zamanlı, yüksek kademe",
+      "place": "ev",
+      "pricePerKwhTry": 4.857048,
+      "note": "Günlük ortalama 8 kWh’yi aşan kısım. Enerji 189,5808, dağıtım 242,4900, fon/pay/vergi 9,4790, KDV’li 485,7048 kr/kWh."
+    },
+    {
+      "id": "mesken-dusuk",
+      "name": "Ev, mesken tek zamanlı, düşük kademe",
+      "place": "ev",
+      "pricePerKwhTry": 3.238035,
+      "note": "Günlük ortalama 8 kWh ve altı. Enerji 49,4065, dağıtım 242,4900, fon/pay/vergi 2,4703, KDV’li 323,8035 kr/kWh."
+    },
+    {
+      "id": "ev-gece",
+      "name": "Ev, üç zamanlı gece dilimi",
+      "place": "ev",
+      "pricePerKwhTry": null,
+      "note": "Bu tabloda gece diliminin KDV’li tek fiyatı yok. Fiyatı faturandan yaz."
+    },
+    {
+      "id": "ac-istasyon",
+      "name": "Halka açık AC",
+      "place": "istasyon",
+      "pricePerKwhTry": null,
+      "note": "Ülke geneli tek AC fiyatı yok. İstasyondaki TL/kWh fiyatını yaz."
+    },
+    {
+      "id": "dc-istasyon",
+      "name": "Halka açık DC",
+      "place": "istasyon",
+      "pricePerKwhTry": null,
+      "note": "Ülke geneli tek DC fiyatı yok. İstasyondaki TL/kWh fiyatını yaz."
+    }
+  ],
+  "fuels": [
+    {
+      "id": "benzin-95",
+      "name": "Kurşunsuz benzin 95 oktan",
+      "pricePerLitreTry": 68.39625,
+      "updatedAt": "2026-11-21",
+      "source": {
+        "name": "EPDK, en yüksek işlem hacimli 8 firmanın ortalama bayi fiyatı, 21.11.2026",
+        "url": "https://www.epdk.gov.tr/Detay/Icerik/3-0-226/web-servisler"
+      }
+    },
+    {
+      "id": "motorin",
+      "name": "Motorin",
+      "pricePerLitreTry": 88.82875,
+      "updatedAt": "2026-11-21",
+      "source": {
+        "name": "EPDK, en yüksek işlem hacimli 8 firmanın ortalama bayi fiyatı, 21.11.2026",
+        "url": "https://www.epdk.gov.tr/Detay/Icerik/3-0-226/web-servisler"
+      }
+    }
+  ]
+}

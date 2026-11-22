@@ -1,0 +1,23 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { panel: 'yazilar' }, props: { title: 'Yazılar' } },
+    { params: { panel: 'tarifeler' }, props: { title: 'Tarifeler' } },
+    { params: { panel: 'araclar' }, props: { title: 'Araçlar' } },
+    { params: { panel: 'yazarlar' }, props: { title: 'Kadrolar' } },
+    { params: { panel: 'yonlendirmeler' }, props: { title: 'Yönlendirmeler' } },
+    { params: { panel: 'sss' }, props: { title: 'Sorular' } },
+    { params: { panel: 'ayarlar' }, props: { title: 'Ayarlar' } },
+  ];
+}
+
+const { title } = Astro.props;
+const panel = Astro.params.panel ?? '';
+---
+
+<AdminLayout title={title} panel={panel}>
+  <h1>{title}</h1>
+  <div id="panel"></div>
+</AdminLayout>

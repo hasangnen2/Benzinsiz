@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { pageMeta } from '../lib/site';
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Arama', href: '/ara' },
+];
+---
+
+<BaseLayout title="Arama" description={pageMeta('arama')} crumbs={crumbs} noindex>
+  <main id="icerik" class="wrap py-8" tabindex="-1">
+    <Breadcrumb crumbs={crumbs} />
+    <h1 class="mb-4 font-serif text-4xl">Arama</h1>
+    <form id="search-page" class="mb-6 flex flex-wrap gap-2" action="/ara" method="get" role="search">
+      <label class="sr-only" for="q">Arama sözü</label>
+      <input id="q" class="min-h-11 min-w-[220px] flex-1 rounded-md border border-line bg-white px-3" name="q" type="search" placeholder="Rehber, haber veya model ara" />
+      <button class="btn" type="submit">Ara</button>
+    </form>
+    <p id="search-status" role="status">Bir kelime yaz.</p>
+    <ul id="results" class="grid list-none gap-4 p-0"></ul>
+  </main>
+</BaseLayout>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const query = params.get('q')?.trim() ?? '';
+  const input = document.querySelector<HTMLInputElement>('#q');
+  const status = document.querySelector<HTMLElement>('#search-status');
+  const list = document.querySelector<HTMLElement>('#results');
+  if (input && query) input.value = query;
+
+  function plain(value: string) {
+    const box = document.createElement('div');
+    box.innerHTML = value;
+    return box.textContent ?? '';
+  }
+
+  async function run(value: string) {
+    if (!status || !list) return;
+    if (!value) {
+      status.textContent = 'Bir kelime yaz.';
+      return;
+    }
+    status.textContent = 'Aranıyor.';
+    try {
+      const pagefind = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+      const search = await pagefind.search(value);
+      list.replaceChildren();
+      if (!search.results.length) {
+        status.textContent = `“${value}” için sonuç yok.`;
+        return;
+      }
+      status.textContent = `${search.results.length} sonuç.`;
+      for (const result of search.results) {
+        const data = await result.data();
+        const item = document.createElement('li');
+        item.className = 'card p-5';
+        const link = document.createElement('a');
+        link.href = data.url;
+        link.className = 'font-serif text-2xl';
+        link.textContent = data.meta?.title || data.url;
+        const excerpt = document.createElement('p');
+        excerpt.className = 'mb-0 text-muted';
+        excerpt.textContent = plain(data.excerpt || '');
+        item.append(link, excerpt);
+        list.append(item);
+      }
+    } catch {
+      status.textContent = 'Arama dizini bu ortamda yok. npm run build ardından npm run preview ile açılır.';
+    }
+  }
+
+  if (query) run(query);
+</script>

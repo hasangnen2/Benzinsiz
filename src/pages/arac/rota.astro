@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import RouteCalculator from '../../components/RouteCalculator.astro';
+import { pageMeta } from '../../lib/site';
+
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Araçlar', href: '/arac' },
+  { name: 'Menzil ve rota', href: '/arac/rota' },
+];
+const description = pageMeta('rota');
+---
+
+<BaseLayout title="Menzil ve rota planlayıcı" description={description} crumbs={crumbs}>
+  <main id="icerik" class="wrap max-w-3xl py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <p class="tag m-0">Planlayıcı</p>
+    <h1 class="mt-2 mb-3 font-serif text-4xl">Menzil ve rota planlayıcı</h1>
+    <p class="text-muted">{description}</p>
+    <RouteCalculator />
+  </main>
+</BaseLayout>

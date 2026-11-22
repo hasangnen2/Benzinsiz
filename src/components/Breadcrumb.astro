@@ -1,0 +1,28 @@
+---
+import type { Crumb } from '../lib/schema';
+
+interface Props {
+  crumbs: Crumb[];
+}
+const { crumbs } = Astro.props;
+---
+
+<nav aria-label="Konum" class="mb-4 text-sm text-meta">
+  <ol class="flex flex-wrap gap-x-2 gap-y-1">
+    {
+      crumbs.map((crumb, index) => {
+        const last = index === crumbs.length - 1;
+        return (
+          <li class="inline-flex items-center gap-2">
+            {index > 0 && <span aria-hidden="true">/</span>}
+            {last ? (
+              <span aria-current="page">{crumb.name}</span>
+            ) : (
+              <a href={crumb.href} class="underline">{crumb.name}</a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>

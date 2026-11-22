@@ -1,0 +1,13 @@
+---
+interface Props {
+  tone?: 'dark' | 'light';
+  class?: string;
+}
+const { tone = 'dark', class: className = '' } = Astro.props;
+const accent = tone === 'dark' ? 'text-mint' : 'text-petrol';
+const base = tone === 'dark' ? 'text-cream' : 'text-navy';
+---
+
+<span class:list={['font-serif font-medium leading-none', base, className]}>
+  Benzin<span class={accent}>z</span>iz
+</span>

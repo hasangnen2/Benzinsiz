@@ -1,0 +1,141 @@
+---
+import '../styles/global.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-ext-400.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-ext-600.css';
+import '@fontsource/playfair-display/latin-700.css';
+import '@fontsource/playfair-display/latin-ext-700.css';
+import interLatin from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+import interLatinExt from '@fontsource/inter/files/inter-latin-ext-400-normal.woff2?url';
+import playfairLatin from '@fontsource/playfair-display/files/playfair-display-latin-700-normal.woff2?url';
+import playfairLatinExt from '@fontsource/playfair-display/files/playfair-display-latin-ext-700-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Consent from '../components/Consent.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { countryCode, countryName, defaultOg, integrations, locale, publisherId, siteName, slogan } from '../lib/site';
+import { absUrl } from '../lib/site';
+import { formatWeekday, istanbulIso } from '../lib/dates';
+import { breadcrumbNode, graph, organizationNode, websiteNode, type Crumb } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  noindex?: boolean;
+  crumbs?: Crumb[];
+  extraGraph?: Record<string, unknown>[];
+  prev?: string;
+  next?: string;
+}
+
+const {
+  title,
+  description,
+  image = defaultOg,
+  type = 'website',
+  publishedAt,
+  updatedAt,
+  noindex = false,
+  crumbs = [],
+  extraGraph = [],
+  prev,
+  next,
+} = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = path === '/' ? absUrl('/') : absUrl(path);
+const imageUrl = absUrl(image);
+const pageTitle = path === '/' ? `${siteName} | ${slogan}` : `${title} | ${siteName}`;
+const today = new Date();
+const runtime = integrations();
+const cmp = runtime.cmp;
+const analytics = runtime.analytics;
+const nodes = [
+  organizationNode(),
+  websiteNode(),
+  ...(crumbs.length ? [breadcrumbNode(crumbs)] : []),
+  ...extraGraph,
+];
+---
+
+<!doctype html>
+<html
+  lang="tr"
+  class={cmp ? 'cmp-external' : undefined}
+  data-adsense={publisherId() || undefined}
+  data-analytics={analytics || undefined}
+  data-plausible-domain={runtime.plausibleDomain || undefined}
+  data-plausible-src={runtime.plausibleSrc || undefined}
+  data-ga4={runtime.ga4Id || undefined}
+  data-cmp={cmp || undefined}
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+    <meta name="geo.region" content={countryCode} />
+    <meta name="geo.placename" content={countryName} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={locale} href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0A1F3C" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:alt" content={description} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={description} />
+    {publishedAt && <meta property="article:published_time" content={istanbulIso(publishedAt)} />}
+    {updatedAt && <meta property="article:modified_time" content={istanbulIso(updatedAt)} />}
+    {prev && <link rel="prev" href={absUrl(prev)} />}
+    {next && <link rel="next" href={absUrl(next)} />}
+    <link rel="alternate" type="application/rss+xml" title="Benzinsiz" href={absUrl('/rss.xml')} />
+    <link rel="preload" href={playfairLatinExt} as="font" type="font/woff2" crossorigin fetchpriority="high" />
+    <link rel="preload" href={playfairLatin} as="font" type="font/woff2" crossorigin fetchpriority="high" />
+    <link rel="preload" href={interLatinExt} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
+      try {
+        if (localStorage.getItem('benzinsiz-consent')) document.documentElement.classList.add('consent-known');
+      } catch (e) {}
+    </script>
+    {cmp && <script is:inline async src={cmp}></script>}
+    <JsonLd data={graph(nodes)} />
+  </head>
+  <body>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <Header dateLabel={formatWeekday(today)} iso={istanbulIso(today)} />
+    <slot />
+    <Footer />
+    <Consent />
+  </body>
+</html>

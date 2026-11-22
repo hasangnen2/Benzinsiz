@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { pageMeta } from '../../lib/site';
+
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Araçlar', href: '/arac' },
+];
+const description = pageMeta('arac');
+const tools = [
+  { href: '/arac/hesaplayici', kicker: 'Hesaplayıcı', title: 'Şarj maliyeti hesaplayıcı', text: 'Evde 100 km, 4 Nisan 2026 mesken kademesiyle. İstasyon fiyatını sen yazarsın.' },
+  { href: '/arac/rota', kicker: 'Planlayıcı', title: 'Menzil ve rota planlayıcı', text: 'Kullanılabilir menzille mola sayısını ve varışta kalan kilometreyi gör.' },
+  { href: '/arac/yakit', kicker: 'Karşılaştırma', title: 'Benzinli mi, elektrikli mi?', text: 'Yıllık gideri, EPDK elektrik kademesi ve 21 Kasım 2026 yakıt ortalamasıyla yan yana koy.' },
+];
+---
+
+<BaseLayout title="Araçlar" description={description} crumbs={crumbs}>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <h1 class="mb-3 font-serif text-4xl">Araçlar</h1>
+    <p class="max-w-[68ch] text-muted">{description}</p>
+    <div class="grid gap-5 md:grid-cols-3">
+      {
+        tools.map((tool) => (
+          <a href={tool.href} class="card card-link block p-6 text-inherit hover:text-inherit">
+            <p class="tag m-0">{tool.kicker}</p>
+            <h2 class="mt-2 mb-2 text-xl">{tool.title}</h2>
+            <p class="m-0 text-muted">{tool.text}</p>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+</BaseLayout>

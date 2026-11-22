@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import ContentList from '../../../components/ContentList.astro';
+import { PAGE_SIZE, loadArticles, slicePage } from '../../../lib/articles';
+import { pageMeta } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  const all = (await loadArticles()).filter((item) => item.type === 'haber');
+  const pages = Math.ceil(all.length / PAGE_SIZE);
+  return Array.from({ length: Math.max(0, pages - 1) }, (_, index) => ({ params: { page: String(index + 2) } }));
+}
+
+const page = Number(Astro.params.page);
+const all = (await loadArticles()).filter((item) => item.type === 'haber');
+const view = slicePage(all, page);
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Haberler', href: '/haber' },
+  { name: `Sayfa ${view.page}`, href: `/haber/sayfa/${view.page}` },
+];
+const description = pageMeta('haber');
+const prev = view.page > 2 ? `/haber/sayfa/${view.page - 1}` : '/haber';
+const next = view.page < view.totalPages ? `/haber/sayfa/${view.page + 1}` : undefined;
+---
+
+<BaseLayout title={`Haberler, sayfa ${view.page}`} description={description} crumbs={crumbs} prev={prev} next={next}>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <h1 class="mb-3 font-serif text-4xl">Haberler</h1>
+    <p class="max-w-[68ch] text-muted">{description}</p>
+    <ContentList items={view.items} page={view.page} totalPages={view.totalPages} total={view.total} base="/haber" current="haber" />
+  </main>
+</BaseLayout>

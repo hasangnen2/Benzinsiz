@@ -1,0 +1,16 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Giriş" panel="giris">
+  <h1>Giriş</h1>
+  <p class="admin-note">Tek kullanıcı. Şifre <code>ADMIN_PASSWORD</code> alanındadır ve sayfaya yazılmaz. Kayıt yalnızca <code>npm run dev</code> açıkken dosyaya işlenir.</p>
+  <form id="login-form" class="stack">
+    <label>
+      Şifre
+      <input name="password" type="password" autocomplete="current-password" required />
+    </label>
+    <button class="btn" type="submit">Giriş yap</button>
+    <p id="login-status" class="admin-status" hidden></p>
+  </form>
+</AdminLayout>

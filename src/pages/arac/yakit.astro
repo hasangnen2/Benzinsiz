@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FuelCalculator from '../../components/FuelCalculator.astro';
+import { pageMeta } from '../../lib/site';
+
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Araçlar', href: '/arac' },
+  { name: 'Yakıt gideri', href: '/arac/yakit' },
+];
+const description = pageMeta('yakit');
+---
+
+<BaseLayout title="Benzinli mi, elektrikli mi?" description={description} crumbs={crumbs}>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <p class="tag m-0">Karşılaştırma</p>
+    <h1 class="mt-2 mb-3 font-serif text-4xl">Benzinli mi, elektrikli mi?</h1>
+    <p class="max-w-[68ch] text-muted">{description}</p>
+    <FuelCalculator />
+  </main>
+</BaseLayout>

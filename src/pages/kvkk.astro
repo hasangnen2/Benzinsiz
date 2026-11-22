@@ -1,0 +1,30 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { contactEmail, pageMeta } from '../lib/site';
+const email = contactEmail();
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'KVKK aydınlatma metni', href: '/kvkk' },
+];
+---
+
+<PageLayout title="KVKK aydınlatma metni" description={pageMeta('kvkk')} crumbs={crumbs}>
+  <p>Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu’nun 10. maddesindeki aydınlatma yükümlülüğüne göre yazılmıştır. Köşeli parantez, uydurulmuş sicil değildir. Unvan, adres, KEP ve VERBİS numarası belgeye bağlanınca aynı metin yürür.</p>
+  <h2>Veri sorumlusu</h2>
+  <p><span class="missing">[ticari unvan]</span>, <span class="missing">[adres]</span>. Başvuru: {email ? <a href={`mailto:${email}`}>{email}</a> : <span class="missing">[e-posta adresi]</span>}. KEP: <span class="missing">[KEP]</span>. VERBİS: <span class="missing">[VERBİS numarası]</span>.</p>
+  <h2>Hangi veri, hangi amaç, hangi sebep</h2>
+  <ul>
+    <li>Bülten e-postası: özeti göndermek. Sebep, formu göndererek verdiğin açık rıza. Servis bağlı değilse işlem yapılmaz.</li>
+    <li>İletişim formu: ad, e-posta, konu ve mesaj. Amaç, başvuruyu yanıtlamak. Düzeltme ve genel yazışmada sebep, meşru menfaat ile talebi sonuçlandırmak; KVKK başvurusunda kanunun öngördüğü yükümlülük.</li>
+    <li>Çerez tercihi: reklam ve ölçüm betiğinin seçimin dışında açılmamasını sağlamak. Zorunlu kayıt, tercihin kendisini tutar. Reklam ve ölçüm, ayrı açık rızayla yüklenir.</li>
+  </ul>
+  <h2>Aktarım</h2>
+  <p>Bülten, ölçüm veya reklam aracı bağlanırsa veri, o aracı çalıştırmak için ilgili sağlayıcıya gider. Araç bağlı değilse aktarım yoktur. Sağlayıcı yurt dışındaysa aktarım, kanunun yurt dışına aktarma şartları sağlanarak yapılır. Barındırıcının erişim kaydı, sitenin sunulması için o firmanın kendi işlemidir.</p>
+  <h2>Süre</h2>
+  <p>İletişim kaydı, başvurunun sonuçlanması ve olası bir uyuşmazlık için gereken süre boyunca tutulur; sonra silinir veya anonim hale getirilir. Bülten adresi, listeden çıkana veya servis süresi dolana kadar o servistedir. Çerez tercihi, sen silene kadar cihazındadır.</p>
+  <h2>Başvuru</h2>
+  <p>Başvurunu <a href="/iletisim?konu=kvkk">iletişim sayfasında</a> KVKK konusunu seçerek veya yukarıdaki adrese yazarak iletebilirsin. Başvuruda adın, yanıt adresi ve istemin yer alır. Kimliği doğrulamak için ek belge gerekirse ayrıca istenir. Kimlik görüntüsü formun varsayılan alanı değildir.</p>
+  <p>Kanunun 13. maddesine göre talep, mümkün olan en kısa sürede ve en geç otuz gün içinde sonuçlandırılır. İşlemin ayrıca bir maliyeti doğarsa, Kurul’un tarifesindeki ücret uygulanabilir.</p>
+  <h2>Hakların</h2>
+  <p>Kanunun 11. maddesindeki haklar saklıdır: verinin işlenip işlenmediğini öğrenme, işlenmişse bilgi isteme, amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme, eksik veya yanlışsa düzeltilmesini isteme, sebepler ortadan kalkmışsa silinmesini veya yok edilmesini isteme, düzeltme ve silmenin aktarılanlara bildirilmesini isteme, münhasıran otomatik analize itiraz ve kanuna aykırı işleme nedeniyle zararın giderilmesini talep. Kişisel Verileri Koruma Kurulu’na şikâyet hakkın saklıdır.</p>
+</PageLayout>

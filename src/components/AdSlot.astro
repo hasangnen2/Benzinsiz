@@ -1,0 +1,26 @@
+---
+interface Props {
+  slot?: string;
+  height: number;
+  label?: string;
+  format?: string;
+  class?: string;
+}
+const { slot = '', height, label = 'Reklam alanı', format, class: className = '' } = Astro.props;
+---
+
+{slot ? (
+<div class:list={['ad-slot', className]} data-pagefind-ignore data-nosnippet>
+  <p class="ad-label">Reklam</p>
+  <div
+    class="ad-frame"
+    style={`height:${height}px`}
+    data-ad-slot={slot || undefined}
+    data-ad-format={format}
+    role="complementary"
+    aria-label="Reklam"
+  >
+    <span class="ad-placeholder">{label}</span>
+  </div>
+</div>
+) : null}

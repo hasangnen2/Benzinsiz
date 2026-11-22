@@ -1,0 +1,205 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import Cover from './Cover.astro';
+import AdSlot from './AdSlot.astro';
+import NewsletterForm from './NewsletterForm.astro';
+import { loadArticles, nextStep, relatedArticles, toModel, type ArticleEntry } from '../lib/articles';
+import { renderMarkdown } from '../lib/markdown';
+import { adSlotIds, authorBySlug, coverTone } from '../lib/site';
+import { absUrl, locale } from '../lib/site';
+import { formatDate, istanbulIso } from '../lib/dates';
+import { defaultOg } from '../lib/site';
+
+interface Props {
+  entry: ArticleEntry;
+}
+const article = toModel(Astro.props.entry);
+const rendered = await renderMarkdown(article.body, article.affiliate);
+const all = await loadArticles();
+const related = relatedArticles(all, article);
+const step = nextStep(article);
+const author = authorBySlug(article.authorSlug);
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: article.type === 'haber' ? 'Haberler' : 'Rehberler', href: article.type === 'haber' ? '/haber' : '/rehber' },
+  { name: article.categoryName, href: `/kategori/${article.categorySlug}` },
+  { name: article.title, href: article.href },
+];
+const h2s = rendered.headings.filter((heading) => heading.depth === 2);
+const imageUrl = article.heroImage?.src ? absUrl(article.heroImage.src) : absUrl(defaultOg);
+const citations = article.sources
+  .filter((source) => source.url && /^https?:\/\//i.test(source.url))
+  .map((source) => ({ '@type': 'CreativeWork', name: source.name, url: source.url }));
+const newsArticle = {
+  '@type': article.type === 'haber' ? 'NewsArticle' : 'Article',
+  headline: article.title,
+  description: article.description,
+  datePublished: istanbulIso(article.publishedAt),
+  dateModified: istanbulIso(article.updatedAt),
+  inLanguage: locale,
+  isAccessibleForFree: true,
+  mainEntityOfPage: absUrl(article.href),
+  articleSection: article.categoryName,
+  author: {
+    '@type': 'Organization',
+    name: article.authorName,
+    url: absUrl(`/yazar/${article.authorSlug}`),
+  },
+  publisher: { '@id': `${absUrl('/')}#organization` },
+  copyrightHolder: { '@id': `${absUrl('/')}#organization` },
+  image: {
+    '@type': 'ImageObject',
+    url: imageUrl,
+    caption: article.heroAlt || article.title,
+  },
+  ...(citations.length ? { citation: citations, isBasedOn: citations } : {}),
+};
+const parts = rendered.parts;
+const [slotEarly, slotMid, slotLate] = rendered.slots;
+---
+
+<BaseLayout
+  title={article.title}
+  description={article.description}
+  type="article"
+  publishedAt={article.publishedAt}
+  updatedAt={article.updatedAt}
+  crumbs={crumbs}
+  extraGraph={[newsArticle]}
+>
+  <main id="icerik" class="wrap py-8" tabindex="-1">
+    <Breadcrumb crumbs={crumbs} />
+    <div class="xl:grid xl:grid-cols-[minmax(0,1fr)_300px] xl:gap-10">
+      <article data-pagefind-body>
+        <p class="m-0 mb-3 flex flex-wrap items-center gap-2">
+          {article.breaking && <span class="breaking">Son dakika</span>}
+          <a class="tag" href={`/kategori/${article.categorySlug}`}>{article.categoryName}</a>
+          <span class="text-sm text-meta">{article.typeLabel}</span>
+        </p>
+        {article.sponsored && <p class="notice">Sponsorlu içerik. Bu metin bir reklamverenle hazırlanmıştır.</p>}
+        {article.affiliate && <p class="notice">Bu yazı bağlı (affiliate) bağlantı içerebilir. Bağlantılar rel="sponsored" taşır.</p>}
+        <h1 class="mt-2 mb-3 font-serif text-[2rem] leading-tight font-bold sm:text-[2.4rem]">{article.title}</h1>
+        <p class="m-0 max-w-[68ch] text-[1.0625rem] leading-relaxed text-muted">{article.description}</p>
+        <p class="mt-4 mb-5 text-sm text-meta">
+          <a href={`/yazar/${article.authorSlug}`}>{article.authorName}</a>
+          {' · '}
+          <time datetime={istanbulIso(article.publishedAt)}>Yayın: {formatDate(article.publishedAt)}</time>
+          {' · '}
+          <time datetime={istanbulIso(article.updatedAt)}>Güncelleme: {formatDate(article.updatedAt)}</time>
+          {' · '}
+          {article.minutes} dk okuma
+        </p>
+        <Cover image={article.heroImage} alt={article.heroAlt ?? article.title} tone={coverTone(article.categorySlug)} hero priority />
+        <aside class="summary-box">
+          <h2>Kısaca</h2>
+          <ul>
+            {article.summary.map((item) => <li>{item}</li>)}
+          </ul>
+        </aside>
+        {
+          h2s.length > 0 && (
+            <nav class="toc mb-8" aria-label="İçindekiler">
+              <details class="lg:hidden">
+                <summary class="flex min-h-11 items-center font-semibold">İçindekiler</summary>
+                <ol>
+                  {h2s.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+                </ol>
+              </details>
+              <div class="hidden lg:block">
+                <h2>İçindekiler</h2>
+                <ol>
+                  {h2s.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+                </ol>
+              </div>
+            </nav>
+          )
+        }
+        {parts[0] && <div class="prose" set:html={parts[0]} />}
+        {slotEarly && adSlotIds.early && <div class="my-8 xl:hidden"><AdSlot slot={adSlotIds.early} height={280} label="Reklam alanı · yazı" format="rectangle" /></div>}
+        {parts[1] && <div class="prose" set:html={parts[1]} />}
+        <aside class="my-8 rounded-[10px] border border-line bg-white p-5">
+          <p class="tag m-0">Hesaplayıcı</p>
+          <h2 class="mt-2 mb-2 font-serif text-2xl">Hesaplayıcıyı aç</h2>
+          <p class="m-0 mb-4 text-muted">100 km maliyetini tüketimin ve seçtiğin tarifeyle hesapla. Ev fiyatı resmi tablodan gelir. İstasyon fiyatı yoksa sen yazarsın.</p>
+          <a class="btn" href="/arac/hesaplayici">Hesaplayıcıyı aç</a>
+        </aside>
+        {slotMid && adSlotIds.mid && <div class="my-8"><AdSlot slot={adSlotIds.mid} height={280} label="Reklam alanı · yazı" format="rectangle" /></div>}
+        {parts[2] && <div class="prose" set:html={parts[2]} />}
+        <section class="my-8 rounded-[10px] bg-navy p-5 text-cream on-dark" aria-label="Bülten">
+          <h2 class="mt-0 mb-2 font-serif text-2xl text-cream">Haftalık özeti e-postana al</h2>
+          <p class="mt-0 text-fog">Yeni haber ve rehberler. Servis bağlı değilse adres kaydedilmez.</p>
+          <NewsletterForm compact id="bulten-yazi" />
+        </section>
+        {slotLate && adSlotIds.late && <div class="my-8"><AdSlot slot={adSlotIds.late} height={280} label="Reklam alanı · yazı" format="rectangle" /></div>}
+        {!slotLate && !slotEarly && adSlotIds.late && <div class="my-8"><AdSlot slot={adSlotIds.late} height={280} label="Reklam alanı · yazı" format="rectangle" /></div>}
+        {parts[3] && <div class="prose" set:html={parts[3]} />}
+
+        <section class="mt-10">
+          <h2 class="font-serif text-2xl">Kaynaklar</h2>
+          {
+            article.sources.length === 0 ? (
+              <p class="text-muted">Bu yazıya henüz kaynak eklenmedi.</p>
+            ) : (
+              <ul>
+                {article.sources.map((source) => (
+                  <li>
+                    {source.url ? (
+                      <a href={source.url} rel="noopener noreferrer">{source.name}</a>
+                    ) : (
+                      <span>{source.name} · <span class="missing">[URL]</span></span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+          <p><a href={`/iletisim?konu=duzeltme`}>Düzeltme bildir</a></p>
+        </section>
+      </article>
+      <aside class="mt-10 xl:mt-0" data-pagefind-ignore>
+        {
+          author && (
+            <div class="card mb-6 p-5">
+              <p class="tag m-0">Yazar</p>
+              <h2 class="mt-2 mb-2 font-serif text-xl"><a href={`/yazar/${author.slug}`}>{author.name}</a></h2>
+              <p class="m-0 text-sm text-muted">{author.jobTitle}. {author.expertise.join(', ')}.</p>
+            </div>
+          )
+        }
+        <div class="xl:sticky xl:top-6">
+          {adSlotIds.sidebar && <AdSlot slot={adSlotIds.sidebar} height={600} label="Reklam alanı · 300×600" format="vertical" class="hidden xl:block" />}
+        </div>
+      </aside>
+    </div>
+
+    <section class="mt-12" data-pagefind-ignore>
+      <div class="section-head">
+        <h2>İlgili yazılar</h2>
+        <a class="text-sm font-semibold text-petrol" href={article.type === 'haber' ? '/haber' : '/rehber'}>Tümü</a>
+      </div>
+      {
+        related.length === 0 ? (
+          <p>Bu başlığa yakın başka yazı henüz yok.</p>
+        ) : (
+          <div class="grid gap-6 md:grid-cols-3">
+            {related.map((item) => (
+              <article class="card p-5">
+                <p class="tag m-0">{item.categoryName}</p>
+                <h3 class="mt-2 mb-2 font-serif text-xl"><a href={item.href}>{item.title}</a></h3>
+                <p class="m-0 text-sm text-meta">{item.minutes} dk okuma</p>
+              </article>
+            ))}
+          </div>
+        )
+      }
+    </section>
+
+    <section class="mt-10 rounded-[10px] border border-line bg-white p-6" data-pagefind-ignore>
+      <p class="tag m-0">Sonraki adım</p>
+      <h2 class="mt-2 mb-2 font-serif text-2xl">{step.title}</h2>
+      <p class="m-0 mb-4 text-muted">{step.text}</p>
+      <a class="btn" href={step.href}>Devam et</a>
+    </section>
+  </main>
+</BaseLayout>

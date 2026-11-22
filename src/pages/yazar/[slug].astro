@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { authors, authorBySlug } from '../../lib/site';
+import { loadArticles } from '../../lib/articles';
+import { absUrl } from '../../lib/site';
+
+export function getStaticPaths() {
+  return authors.map((author) => ({ params: { slug: author.slug } }));
+}
+
+const author = authorBySlug(Astro.params.slug ?? '');
+if (!author) throw new Error('Yazar yok');
+const articles = (await loadArticles()).filter((item) => item.authorSlug === author.slug);
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Editör kadrosu', href: '/yazar' },
+  { name: author.name, href: `/yazar/${author.slug}` },
+];
+const person = {
+  '@type': 'Person',
+  name: author.name,
+  jobTitle: author.jobTitle,
+  url: absUrl(`/yazar/${author.slug}`),
+  worksFor: { '@id': `${absUrl('/')}#organization` },
+  knowsAbout: author.expertise,
+  description: author.bio,
+};
+---
+
+<BaseLayout title={author.name} description={author.bio} crumbs={crumbs} extraGraph={[person]}>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <p class="tag m-0">{author.jobTitle}</p>
+    <h1 class="mt-2 mb-3 font-serif text-4xl">{author.name}</h1>
+    <p class="max-w-[68ch]">{author.bio}</p>
+    <h2 class="font-serif text-2xl">Sorumluluk</h2>
+    <p>{author.duty}</p>
+    <h2 class="font-serif text-2xl">Uzmanlık alanı</h2>
+    <ul>
+      {author.expertise.map((item) => <li>{item}</li>)}
+    </ul>
+    <h2 class="font-serif text-2xl">Yazılar</h2>
+    {
+      articles.length === 0 ? (
+        <p>
+          Bu görevin kendi imzasıyla yayımlanmış yazı yok.
+          {author.slug === 'benzinsiz-editoru' ? '' : <span> Mevcut metinler <a href="/yazar/benzinsiz-editoru">ortak imzada</a> durur.</span>}
+        </p>
+      ) : (
+        <ul>
+          {articles.map((article) => (
+            <li><a href={article.href}>{article.title}</a> · {article.typeLabel}</li>
+          ))}
+        </ul>
+      )
+    }
+  </main>
+</BaseLayout>

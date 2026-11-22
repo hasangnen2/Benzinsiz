@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { authors, pageMeta } from '../../lib/site';
+
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Editör kadrosu', href: '/yazar' },
+];
+const description = pageMeta('yazarlar');
+---
+
+<BaseLayout title="Editör kadrosu" description={description} crumbs={crumbs}>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <h1 class="mb-3 font-serif text-4xl">Editör kadrosu</h1>
+    <p class="max-w-[68ch] text-muted">Beş görev masası yayını böler. Yayımlanmış metinler şimdilik ortak imzadadır. Kişinin adı künyeye yazılınca sayfa adresi değişmez; eski adres gerekirse 301 ile bağlanır.</p>
+    <div class="grid gap-5 md:grid-cols-2">
+      {
+        authors.map((author) => (
+          <article class="card p-6">
+            <p class="tag m-0">{author.jobTitle}</p>
+            <h2 class="mt-2 mb-2 font-serif text-2xl"><a href={`/yazar/${author.slug}`}>{author.name}</a></h2>
+            <p class="m-0">{author.duty}</p>
+            <p class="mb-0 text-sm text-muted">Uzmanlık: {author.expertise.join(', ')}.</p>
+          </article>
+        ))
+      }
+    </div>
+  </main>
+</BaseLayout>

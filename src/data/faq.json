@@ -1,0 +1,26 @@
+[
+  {
+    "question": "Rakamlar neden köşeli parantez içinde?",
+    "answer": "Fiyat, menzil, süre ve tarife ancak kaynakla birlikte kayda girer. Kaydı boş olan alan sitede [böyle] durur. Benzinsiz o hücreye rakam yazmaz."
+  },
+  {
+    "question": "Haber ile rehberin farkı nedir?",
+    "answer": "Haber, tarife ve düzenleme gibi güncel başlığı işler. Rehber, karar ve kurulum adımlarını toplar. İkisinde de başlık, görünür tarih ve kaynak satırı vardır."
+  },
+  {
+    "question": "Karşılaştırma sayfası nasıl oluşur?",
+    "answer": "Sayfa, kayıtlı araç verisinden üretilir. Çiftin kalıcı adresi slug sırasına göredir; ters yazılış 301 ile o adrese döner. Verisi olmayan hücre köşeli parantezde kalır."
+  },
+  {
+    "question": "Reklam haberin yerine geçer mi?",
+    "answer": "Geçmez. Reklam alanı “Reklam” etiketi taşır ve onaydan önce reklam betiği yüklenmez. Sponsorlu yazı ile bağlı (affiliate) bağlantı, başlığın yanında ayrıca belirtilir."
+  },
+  {
+    "question": "Yanlış bir bilgi görürsem ne olur?",
+    "answer": "İletişim sayfasından düzeltme konusunu seçip yazarsınız. Düzeltme, yazının güncelleme tarihinde görünür. Süre politikası düzeltme sayfasında yazılıdır."
+  },
+  {
+    "question": "Bülten adresi kaydediyor mu?",
+    "answer": "Form, bülten servisi bağlanmadan adresi kaydetmez ve bunu ekranda söyler. Servis bağlıysa adres yalnızca gönderdiğinizde o servise gider."
+  }
+]

@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+import '../styles/admin.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-ext-400.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-ext-600.css';
+import '@fontsource/playfair-display/latin-700.css';
+import '@fontsource/playfair-display/latin-ext-700.css';
+
+interface Props {
+  title: string;
+  panel: string;
+}
+
+const { title, panel } = Astro.props;
+const links = [
+  { href: '/admin', id: 'ozet', label: 'Özet' },
+  { href: '/admin/yazilar', id: 'yazilar', label: 'Yazılar' },
+  { href: '/admin/tarifeler', id: 'tarifeler', label: 'Tarifeler' },
+  { href: '/admin/araclar', id: 'araclar', label: 'Araçlar' },
+  { href: '/admin/yazarlar', id: 'yazarlar', label: 'Kadrolar' },
+  { href: '/admin/yonlendirmeler', id: 'yonlendirmeler', label: 'Yönlendirme' },
+  { href: '/admin/sss', id: 'sss', label: 'Sorular' },
+  { href: '/admin/ayarlar', id: 'ayarlar', label: 'Ayarlar' },
+];
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} · Benzinsiz yönetim</title>
+  </head>
+  <body data-panel={panel} data-pagefind-ignore>
+    <a class="skip" href="#icerik">İçeriğe geç</a>
+    <header class="admin-bar">
+      <a href="/admin">Benzinsiz yönetim</a>
+      <button class="btn" type="button" data-logout>Çıkış</button>
+    </header>
+    <div class="admin-shell">
+      <nav class="admin-nav" aria-label="Yönetim">
+        {
+          links.map((link) => (
+            <a href={link.href} aria-current={link.id === panel ? 'page' : undefined}>
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+      <main id="icerik" class="admin-main">
+        <slot />
+      </main>
+    </div>
+    <script>
+      import { bootAdmin } from '../scripts/admin-client';
+      bootAdmin();
+    </script>
+  </body>
+</html>

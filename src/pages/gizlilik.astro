@@ -1,0 +1,26 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { contactEmail, pageMeta } from '../lib/site';
+const email = contactEmail();
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Gizlilik politikası', href: '/gizlilik' },
+];
+---
+
+<PageLayout title="Gizlilik politikası" description={pageMeta('gizlilik')} crumbs={crumbs}>
+  <p>Site statik üretilir. Üyelik, yorum hesabı ve okur profili yoktur. Veri sorumlusu <span class="missing">[ticari unvan]</span>, adres <span class="missing">[adres]</span>. Başvuru: {email ? <a href={`mailto:${email}`}>{email}</a> : <span class="missing">[e-posta adresi]</span>}. Hakların dökümü <a href="/kvkk">KVKK aydınlatma metnindedir</a>.</p>
+  <h2>İşlenen veriler</h2>
+  <ul>
+    <li>Bülten: e-posta adresin, yalnızca servis bağlıysa ve formu gönderirsen o servise gider. Servis yoksa adres kaydedilmez ve form bunu ekranda söyler.</li>
+    <li>İletişim: ad, e-posta, konu ve mesaj, başvuruyu yanıtlamak için kullanılır. Uç tanımlı değilse mesaj sunucuya yazılmaz; cihazındaki e-posta programı açılır.</li>
+    <li>Çerez tercihi: reklam ve ölçüm kararın bu cihazda <code>benzinsiz-consent</code> anahtarıyla durur. İlgili seçim “evet” olmadan o betik yüklenmez.</li>
+    <li>Barındırma kaydı: siteyi sunan firmanın erişim kaydı olabilir. Benzinsiz bunun için ayrı bir veri tabanı tutmaz.</li>
+  </ul>
+  <h2>Amaç</h2>
+  <p>Bülten adresi, istemişsen özeti göndermek içindir. İletişim kaydı, düzeltme, reklam veya KVKK başvurunu yanıtlamak içindir. Tercih kaydı, seçmediğin betiğin açılmaması içindir. Bu kayıtlar profil çıkarmak veya ilan satmak için birleştirilmez.</p>
+  <h2>Süre ve aktarım</h2>
+  <p>Bülten adresi, bülten sağlayıcısının saklama süresine tabidir. Ölçüm aracı Plausible veya GA4 olabilir; hangisi olduğu ortamda seçilir ve ancak onaydan sonra yüklenir. Reklam, Google AdSense üzerinden ve onaydan sonra yüklenir. Araç bağlı değilse o araca aktarım yoktur. Yurt dışına aktarım, sağlayıcı bağlandığında ve kanundaki şartlar içinde değerlendirilir.</p>
+  <h2>Seçimini geri alma</h2>
+  <p>Çerez tercihini alt bilgideki “Çerez tercihleri” düğmesinden değiştirirsin. Bülten listesinden çıkmak, servis bağlıysa o servisin çıkış yoluyla olur. İletişimde yazdığın mesajın silinmesini <a href="/iletisim?konu=kvkk">KVKK konusuyla</a> isteyebilirsin.</p>
+</PageLayout>

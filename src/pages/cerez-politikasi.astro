@@ -1,0 +1,51 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { pageMeta } from '../lib/site';
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Çerez politikası', href: '/cerez-politikasi' },
+];
+---
+
+<PageLayout title="Çerez politikası" description={pageMeta('cerez')} crumbs={crumbs}>
+  <p>Sayfa açılınca bir bant sorar. “Kabul et” ve “Reddet” aynı boydadır. Reddet, zorunlu tercih kaydı dışında betik yüklemez. “Tercihler” ölçüm ile reklamı ayrı ayrı açar. Seçimi alt bilgideki “Çerez tercihleri” ile yeniden değiştirebilirsin.</p>
+  <p>Yerleşik bant, Google’ın sertifikaladığı bir izin platformu değildir. Böyle bir platformun adresi ortama yazılırsa bant onun arayüzüne bırakılır. O modda reklam, depolama izni ve bir reklam amacı birlikte gelmeden açılmaz. “GDPR uygulanmıyor” kaydı, bu sitede reklam izni sayılmaz.</p>
+  <h2>Kayıtlar</h2>
+  <div class="overflow-x-auto">
+  <table class="specs record-table">
+    <caption class="sr-only">Çerez ve yerel kayıt kategorileri</caption>
+    <thead>
+      <tr><th scope="col">Kayıt</th><th scope="col">Amaç</th><th scope="col">Süre</th><th scope="col">Tür</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="Kayıt">benzinsiz-consent</td>
+        <td data-label="Amaç">Reklam ve ölçüm seçimini bu cihazda tutmak</td>
+        <td data-label="Süre">Sen silene veya tercihi değiştirene kadar</td>
+        <td data-label="Tür">Zorunlu, yerel kayıt</td>
+      </tr>
+      <tr>
+        <td data-label="Kayıt">Plausible</td>
+        <td data-label="Amaç">Sayfa sayımı. Varsayılan betik çerez yazmaz; yine de onaydan sonra yüklenir.</td>
+        <td data-label="Süre">Sağlayıcının süresi</td>
+        <td data-label="Tür">Ölçüm, onaylı</td>
+      </tr>
+      <tr>
+        <td data-label="Kayıt">GA4</td>
+        <td data-label="Amaç">Sayfa ölçümü. Yalnızca bu araç seçiliyse ve onaydan sonra.</td>
+        <td data-label="Süre">Google’ın süresi</td>
+        <td data-label="Tür">Ölçüm, onaylı</td>
+      </tr>
+      <tr>
+        <td data-label="Kayıt">AdSense</td>
+        <td data-label="Amaç">Reklam göstermek. Onay, kişiselleştirilmiş reklamı da kapsar.</td>
+        <td data-label="Süre">Google’ın süresi</td>
+        <td data-label="Tür">Reklam, onaylı</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <h2>Tarayıcıdan silmek</h2>
+  <p>Çerezleri ve site verisini tarayıcı ayarından silebilirsin. <code>benzinsiz-consent</code> silinirse bant bir sonraki ziyarette yeniden sorar. Reklam ve ölçüm betikleri, yeni bir “evet” gelmeden yüklenmez.</p>
+  <p>Ayrıntılı haklar <a href="/gizlilik">gizlilik politikasında</a> ve <a href="/kvkk">aydınlatma metninde</a> durur.</p>
+</PageLayout>

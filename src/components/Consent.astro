@@ -1,0 +1,199 @@
+<div class="cookie" role="region" aria-label="Çerez tercihleri" data-pagefind-ignore>
+  <div class="wrap grid items-end gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
+    <div>
+      <p class="m-0 text-sm leading-relaxed">
+        Benzinsiz, reklam ve ölçüm betiklerini yalnızca senin seçiminle yükler. Zorunlu kayıt, bu tercihi cihazında tutar.&nbsp;<a class="underline hover:text-mint" href="/cerez-politikasi">Çerez politikası</a>&nbsp;ve&nbsp;<a class="underline hover:text-mint" href="/kvkk">KVKK aydınlatma metni</a>.
+      </p>
+      <div class="mt-3 grid gap-2 sm:grid-cols-2" data-consent-prefs hidden>
+        <label class="inline-flex min-h-11 items-center gap-2 text-sm">
+          <input type="checkbox" data-consent-analytics /> Ölçüm
+        </label>
+        <label class="inline-flex min-h-11 items-center gap-2 text-sm">
+          <input type="checkbox" data-consent-ads /> Reklam
+        </label>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button class="btn btn-line min-w-28 border-fog text-cream hover:bg-cream hover:text-navy" type="button" data-consent="reject">Reddet</button>
+      <button class="btn min-w-28" type="button" data-consent="accept">Kabul et</button>
+      <button class="btn btn-ghost min-w-28" type="button" data-consent="prefs">Tercihler</button>
+      <button class="btn btn-mint min-w-28" type="button" data-consent="save" hidden>Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const key = 'benzinsiz-consent';
+  const banner = document.querySelector<HTMLElement>('.cookie');
+  const prefs = banner?.querySelector<HTMLElement>('[data-consent-prefs]');
+  const saveButton = banner?.querySelector<HTMLButtonElement>('[data-consent="save"]');
+  const adsBox = banner?.querySelector<HTMLInputElement>('[data-consent-ads]');
+  const analyticsBox = banner?.querySelector<HTMLInputElement>('[data-consent-analytics]');
+
+  type Choice = { v: 1; ads: boolean; analytics: boolean; t: number };
+
+  function readStore(): Choice | null {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return null;
+      const data = JSON.parse(raw) as Choice;
+      if (data.v !== 1 || typeof data.ads !== 'boolean' || typeof data.analytics !== 'boolean') return null;
+      return data;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeStore(ads: boolean, analytics: boolean) {
+    const choice: Choice = { v: 1, ads, analytics, t: Date.now() };
+    localStorage.setItem(key, JSON.stringify(choice));
+    root.classList.add('consent-known');
+    apply(choice);
+  }
+
+  function idle(run: () => void) {
+    if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 2500 });
+    else window.setTimeout(run, 1200);
+  }
+
+  function loadAnalytics(choice: Choice) {
+    if (!choice.analytics || root.dataset.analyticsLoaded) return;
+    const provider = root.dataset.analytics;
+    if (!provider) return;
+    root.dataset.analyticsLoaded = '1';
+    idle(() => {
+      if (provider === 'plausible' && root.dataset.plausibleDomain) {
+        const script = document.createElement('script');
+        script.defer = true;
+        script.dataset.domain = root.dataset.plausibleDomain;
+        script.src = root.dataset.plausibleSrc || 'https://plausible.io/js/script.js';
+        document.head.appendChild(script);
+      }
+      if (provider === 'ga4' && root.dataset.ga4 && typeof window.gtag === 'function') {
+        const id = root.dataset.ga4;
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
+        script.onload = () => {
+          window.gtag?.('js', new Date());
+          window.gtag?.('consent', 'update', { analytics_storage: 'granted' });
+          window.gtag?.('config', id, { anonymize_ip: true });
+        };
+        document.head.appendChild(script);
+      }
+    });
+  }
+
+  function loadAds(choice: Choice) {
+    if (!choice.ads || root.dataset.adsLoaded) return;
+    const client = root.dataset.adsense;
+    if (!client) return;
+    const frames = [...document.querySelectorAll<HTMLElement>('.ad-frame[data-ad-slot]')].filter((frame) => frame.dataset.adSlot);
+    if (!frames.length) return;
+    root.dataset.adsLoaded = '1';
+    idle(() => {
+      window.gtag?.('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+      });
+      frames.forEach((frame) => {
+        const ins = document.createElement('ins');
+        ins.className = 'adsbygoogle';
+        ins.style.display = 'block';
+        ins.style.width = '100%';
+        ins.style.height = '100%';
+        ins.dataset.adClient = client;
+        ins.dataset.adSlot = frame.dataset.adSlot || '';
+        if (frame.dataset.adFormat) ins.dataset.adFormat = frame.dataset.adFormat;
+        ins.dataset.fullWidthResponsive = 'false';
+        frame.appendChild(ins);
+      });
+      const script = document.createElement('script');
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(client)}`;
+      script.onload = () => {
+        document.querySelectorAll('ins.adsbygoogle').forEach(() => {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        });
+      };
+      document.head.appendChild(script);
+    });
+  }
+
+  function apply(choice: Choice) {
+    loadAnalytics(choice);
+    loadAds(choice);
+  }
+
+  function openBanner() {
+    root.classList.remove('consent-known', 'cmp-external');
+    const current = readStore();
+    if (adsBox) adsBox.checked = Boolean(current?.ads);
+    if (analyticsBox) analyticsBox.checked = Boolean(current?.analytics);
+  }
+
+  banner?.addEventListener('click', (event) => {
+    const target = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-consent]');
+    if (!target) return;
+    const action = target.dataset.consent;
+    if (action === 'reject') writeStore(false, false);
+    if (action === 'accept') writeStore(true, true);
+    if (action === 'prefs' && prefs && saveButton) {
+      prefs.hidden = false;
+      saveButton.hidden = false;
+    }
+    if (action === 'save') writeStore(Boolean(adsBox?.checked), Boolean(analyticsBox?.checked));
+  });
+
+  document.querySelector('[data-consent-open]')?.addEventListener('click', () => {
+    const api = window.__tcfapi;
+    if (typeof api === 'function') {
+      api('displayConsentUi', 2, () => {});
+      return;
+    }
+    openBanner();
+  });
+
+  function watchTcf() {
+    let tries = 0;
+    const timer = window.setInterval(() => {
+      tries += 1;
+      const api = window.__tcfapi;
+      if (typeof api === 'function') {
+        window.clearInterval(timer);
+        api('addEventListener', 2, (tcData: TcfData, ok: boolean) => {
+          if (!ok || !tcData || tcData.eventStatus !== 'useractioncomplete') return;
+          const consents = tcData.purpose?.consents ?? {};
+          const ads = consents['1'] === true && (consents['2'] === true || consents['3'] === true || consents['4'] === true);
+          const analytics = consents['1'] === true && ['7', '8', '9', '10'].some((purpose) => consents[purpose] === true);
+          writeStore(ads, analytics);
+        });
+        return;
+      }
+      if (tries > 40) {
+        window.clearInterval(timer);
+        root.classList.remove('cmp-external');
+      }
+    }, 200);
+  }
+
+  const existing = readStore();
+  if (existing) apply(existing);
+  if (root.dataset.cmp) watchTcf();
+
+  interface TcfData {
+    eventStatus?: string;
+    purpose?: { consents?: Record<string, boolean> };
+  }
+
+  declare global {
+    interface Window {
+      gtag?: (...args: unknown[]) => void;
+      adsbygoogle?: unknown[];
+      __tcfapi?: (command: string, version: number, callback: (...args: any[]) => void) => void;
+    }
+  }
+</script>

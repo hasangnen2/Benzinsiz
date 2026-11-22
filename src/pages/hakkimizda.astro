@@ -1,0 +1,22 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { pageMeta } from '../lib/site';
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Hakkımızda', href: '/hakkimizda' },
+];
+---
+
+<PageLayout title="Hakkımızda" description={pageMeta('hakkimizda')} crumbs={crumbs}>
+  <p>Benzinsiz, elektrikli araç kararını haber, rehber ve karşılaştırmayla destekleyen bir yayıncıdır. Sloganı sabittir: elektrikli araç dünyasında güvenilir kaynak.</p>
+  <h2>Ne yayımlarız</h2>
+  <p>Haber, kurumun veya üreticinin yayımladığı güncel kaydı işler. Rehber, satın alma, şarj, menzil ve bakımda izlenecek sırayı toplar. Karşılaştırma, kayıtlı araç verisinden üretilir ve genel bir kazanan ilan etmez. Hesaplayıcı, kayıtlı resmi fiyatı kullanır. Kayıt yoksa sayıyı okur yazar; uydurmaz.</p>
+  <h2>Nasıl çalışırız</h2>
+  <p>Başlık, sayfanın anlattığı şeydir. Açıklama, okurun sayfada gördüğü girişle aynı iddiayı taşır. Fiyat, menzil, güç, süre ve oran ancak kaynak adresiyle birlikte girer. Kaynak yoksa alan köşeli parantezde kalır. İkinci el aktarımı, kurum belgesinin yerine konmaz; aktarım diye etiketlenir.</p>
+  <p>Kadroyu beş görev böler: yayın yönetmeni, haber editörü, rehber editörü, veri editörü ve okur editörü. Yayımlanmış metinler bugün ortak imzadadır. Görev sayfaları <a href="/yazar">editör kadrosunda</a> durur.</p>
+  <h2>Bağımsızlık</h2>
+  <p>Reklam, metinden ayrıdır ve “Reklam” etiketi taşır. Sponsorlu içerik ile bağlı bağlantı, başlığın yanında belirtilir. Reklamveren başlığı, rakamı veya düzeltmeyi belirlemez. Ayrıntı <a href="/reklam-politikasi">reklam politikasında</a> ve <a href="/yayin-ilkeleri">yayın ilkelerindedir</a>.</p>
+  <h2>Kimlik</h2>
+  <p>Tüzel kişilik künyeye işlenmeden burada uydurulmaz. Ticari unvan, adres, MERSİS ve sorumlu yazı işleri müdürü <a href="/kunye">künyede</a> köşeli parantezle durur. Bu alanlar dolduğunda aynı cümleler geçerliliğini korur.</p>
+  <p><a href="/kunye">Künye</a> · <a href="/iletisim">İletişim</a> · <a href="/duzeltme-politikasi">Düzeltme</a></p>
+</PageLayout>

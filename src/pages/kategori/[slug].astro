@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ContentList from '../../components/ContentList.astro';
+import { categories, categoryBySlug } from '../../lib/site';
+import { loadArticles, slicePage } from '../../lib/articles';
+
+export function getStaticPaths() {
+  return categories.map((category) => ({ params: { slug: category.slug } }));
+}
+
+const category = categoryBySlug(Astro.params.slug ?? '');
+if (!category) throw new Error('Kategori yok');
+const all = (await loadArticles()).filter((item) => item.categorySlug === category.slug);
+const view = slicePage(all, 1);
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: category.name, href: `/kategori/${category.slug}` },
+];
+---
+
+<BaseLayout
+  title={category.name}
+  description={category.description}
+  crumbs={crumbs}
+  noindex={all.length === 0}
+  next={view.totalPages > 1 ? `/kategori/${category.slug}/sayfa/2` : undefined}
+>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <h1 class="mb-3 font-serif text-4xl">{category.name}</h1>
+    <p class="max-w-[68ch] text-muted">{category.description}</p>
+    <ContentList items={view.items} page={1} totalPages={view.totalPages} total={view.total} base={`/kategori/${category.slug}`} current={category.slug} />
+  </main>
+</BaseLayout>

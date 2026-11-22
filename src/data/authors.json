@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "yayin-yonetmeni",
+    "name": "Yayın yönetmeni",
+    "jobTitle": "Yayın yönetmeni",
+    "duty": "Yayın kararı, künye ve ilkelerin uygulanması.",
+    "expertise": ["Yayın kararı", "Künye", "İlkeler"],
+    "bio": "Benzinsiz’in yayın kararını veren görevdir. Bir metnin yayımlanması, düzeltilmesi veya sponsorlu diye işaretlenmesi bu masadan çıkar. Kişinin adı künyeye yazılınca bu sayfanın adresi değişmez."
+  },
+  {
+    "slug": "haber-editoru",
+    "name": "Haber editörü",
+    "jobTitle": "Haber editörü",
+    "duty": "Haberlerde kaynak, tarih ve başlık kontrolü.",
+    "expertise": ["Şarj", "Mevzuat", "Pazar"],
+    "bio": "Haber metnini kaynak satırı, görünür tarih ve başlık uyumu için okuyan görevdir. Belgede olmayan rakamı parantezde bırakır. Kurum sayfası ile ikinci el aktarımını ayırır."
+  },
+  {
+    "slug": "rehber-editoru",
+    "name": "Rehber editörü",
+    "jobTitle": "Rehber editörü",
+    "duty": "Rehberlerin sıra, kaynak ve uygulanabilirlik kontrolü.",
+    "expertise": ["Satın alma", "Şarj kurulumu", "Menzil"],
+    "bio": "Rehberi, okurun kararında kullanacağı sırayla ve kaynaksız talimat yazmadan hazırlayan görevdir. Ev şarjı, menzil cümlesi ve satın alma kontrolü bu masadadır."
+  },
+  {
+    "slug": "veri-editoru",
+    "name": "Veri editörü",
+    "jobTitle": "Veri editörü",
+    "duty": "Araç, tarife ve karşılaştırma kayıtları.",
+    "expertise": ["Karşılaştırma", "Tarife", "Hesaplayıcı"],
+    "bio": "Araç ve tarife kayıtlarını kaynak adresi ve güncelleme tarihiyle işleyen görevdir. Kaynak yoksa hücre boş kalır. Karşılaştırma sayfası genel bir kazanan seçmez."
+  },
+  {
+    "slug": "okur-editoru",
+    "name": "Okur editörü",
+    "jobTitle": "Okur editörü",
+    "duty": "Düzeltme, iletişim ve KVKK başvuruları.",
+    "expertise": ["Düzeltme", "İletişim", "KVKK başvurusu"],
+    "bio": "Düzeltme, reklam ve KVKK başvurularını en geç iki iş günü içinde yanıtlayan görevdir. Kabul edilen düzeltme, yazının güncelleme tarihinde görünür."
+  },
+  {
+    "slug": "benzinsiz-editoru",
+    "name": "Benzinsiz Editörü",
+    "jobTitle": "Ortak imza",
+    "duty": "Henüz bir göreve ayrılmamış yayımlanmış metinler.",
+    "expertise": ["Şarj", "Satın alma", "Tarife okuma"],
+    "bio": "Yayımlanmış haber ve rehberlerin ortak imzasıdır. Metin bir göreve bağlanınca o görevin sayfasında listelenir. Bu imza deneyim yılı veya önceki kurum iddia etmez."
+  }
+]

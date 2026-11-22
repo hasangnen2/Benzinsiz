@@ -1,0 +1,98 @@
+---
+import tariffs from '../data/tariffs.json';
+
+const rate = new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 6 });
+---
+
+<form id="route-form" class="grid gap-4">
+  <div class="field">
+    <label for="route-distance">Mesafe (km)</label>
+    <input id="route-distance" name="distance" inputmode="decimal" autocomplete="off" />
+  </div>
+  <div class="field">
+    <label for="route-range">Kullanılabilir menzil (km)</label>
+    <input id="route-range" name="range" inputmode="decimal" autocomplete="off" />
+  </div>
+  <div class="field">
+    <label for="route-use">Tüketim, isteğe bağlı (kWh/100 km)</label>
+    <input id="route-use" name="consumption" inputmode="decimal" autocomplete="off" placeholder="Boşsa enerji hesaplanmaz" />
+  </div>
+  <div class="field">
+    <label for="route-tariff">Enerji fiyatı, isteğe bağlı</label>
+    <select id="route-tariff" name="tariff">
+      <option value="">Fiyat yok</option>
+      {
+        tariffs.items.map((item) => (
+          <option value={item.id} disabled={item.pricePerKwhTry == null}>
+            {item.pricePerKwhTry == null
+              ? `${item.name} — fiyat yok`
+              : `${item.name} — ${rate.format(item.pricePerKwhTry)} TL/kWh`}
+          </option>
+        ))
+      }
+    </select>
+  </div>
+  <div class="field">
+    <label for="route-price">Kendi kWh fiyatın, yazarsan o geçerli (TL)</label>
+    <input id="route-price" name="price" inputmode="decimal" autocomplete="off" placeholder="İstasyon fiyatı" />
+  </div>
+  <button class="btn w-fit" type="submit">Hesapla</button>
+</form>
+<p class="mt-4 text-sm text-muted">
+  Kalkışta menzil dolu kabul edilir. Her molada menzil, girdiğin kullanılabilir menzile döner.
+  Varış payı, hız, hava, yük ve şarj noktasının yolda olup olmadığı bu hesaba girmez. Bu bir navigasyon değildir.
+  Kullanılabilir menzil, broşürdeki menzil değildir. Yolda gidebildiğin kilometreyi yaz.
+</p>
+<div class="result mt-4" role="status" aria-live="polite" id="route-result">
+  <p class="m-0">Mesafe menzili aşmıyorsa mola sıfırdır. Aşıyorsa mola, (mesafe − menzil) ÷ menzil sonucunun yukarı yuvarlanmış halidir.</p>
+</div>
+
+<script>
+  import tariffs from '../data/tariffs.json';
+  import { arrivalReserveKm, chargeStops, energyCost } from '../scripts/cost';
+  import { formatCount, formatMoney, formatRate, parseNum } from '../scripts/numbers';
+
+  const form = document.querySelector<HTMLFormElement>('#route-form');
+  const result = document.querySelector<HTMLElement>('#route-result');
+  if (form && result) {
+    const run = () => {
+      const data = new FormData(form);
+      const distance = parseNum(String(data.get('distance') || ''));
+      const range = parseNum(String(data.get('range') || ''));
+      const consumptionRaw = String(data.get('consumption') || '');
+      const consumption = consumptionRaw.trim() ? parseNum(consumptionRaw) : null;
+      const typed = parseNum(String(data.get('price') || ''));
+      const tariff = tariffs.items.find((item) => item.id === String(data.get('tariff') || ''));
+      const price = typed ?? (tariff?.pricePerKwhTry && tariff.pricePerKwhTry > 0 ? tariff.pricePerKwhTry : null);
+      result.replaceChildren();
+      const add = (text: string) => {
+        const p = document.createElement('p');
+        p.className = 'm-0';
+        p.textContent = text;
+        result.append(p);
+      };
+      if (distance == null || range == null) {
+        add('Mesafe ve kullanılabilir menzil gir. İkisi dolmadan mola sayısı üretilmez.');
+        return;
+      }
+      const stops = chargeStops(distance, range);
+      const reserve = arrivalReserveKm(distance, range);
+      add(`Şarj molası: ${formatCount(stops)}.`);
+      add(`Varışta kalan menzil: ${formatCount(reserve)} km. ${formatCount(distance)} km yol, ${formatCount(range)} km kullanılabilir menzil.`);
+      if (!consumptionRaw.trim()) return;
+      if (consumption == null) {
+        add('Tüketim boş kalabilir. Yazarsan sıfırdan büyük bir kWh/100 km olmalı.');
+        return;
+      }
+      const kwh = (distance / 100) * consumption;
+      add(`Enerji: ${formatRate(kwh)} kWh. ${formatRate(distance)} km × ${formatRate(consumption)} kWh/100 km.`);
+      if (price == null) add('Enerji bedeli için kademe seç veya TL/kWh yaz.');
+      else add(`Enerji bedeli: ${formatMoney(energyCost(consumption, price, distance))}. ${formatRate(price)} TL/kWh. ${typed != null ? 'Yazdığın fiyat.' : tariff?.name ?? ''}`);
+    };
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      run();
+    });
+    form.addEventListener('input', run);
+  }
+</script>

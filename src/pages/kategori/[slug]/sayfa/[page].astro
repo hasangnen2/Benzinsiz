@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../../components/Breadcrumb.astro';
+import ContentList from '../../../../components/ContentList.astro';
+import { categories, categoryBySlug } from '../../../../lib/site';
+import { PAGE_SIZE, loadArticles, slicePage } from '../../../../lib/articles';
+
+export async function getStaticPaths() {
+  const articles = await loadArticles();
+  return categories.flatMap((category) => {
+    const count = articles.filter((item) => item.categorySlug === category.slug).length;
+    const pages = Math.ceil(count / PAGE_SIZE);
+    return Array.from({ length: Math.max(0, pages - 1) }, (_, index) => ({
+      params: { slug: category.slug, page: String(index + 2) },
+    }));
+  });
+}
+
+const category = categoryBySlug(Astro.params.slug ?? '');
+if (!category) throw new Error('Kategori yok');
+const page = Number(Astro.params.page);
+const all = (await loadArticles()).filter((item) => item.categorySlug === category.slug);
+const view = slicePage(all, page);
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: category.name, href: `/kategori/${category.slug}` },
+  { name: `Sayfa ${view.page}`, href: `/kategori/${category.slug}/sayfa/${view.page}` },
+];
+const prev = view.page > 2 ? `/kategori/${category.slug}/sayfa/${view.page - 1}` : `/kategori/${category.slug}`;
+const next = view.page < view.totalPages ? `/kategori/${category.slug}/sayfa/${view.page + 1}` : undefined;
+---
+
+<BaseLayout title={`${category.name}, sayfa ${view.page}`} description={category.description} crumbs={crumbs} prev={prev} next={next}>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <h1 class="mb-3 font-serif text-4xl">{category.name}</h1>
+    <p class="max-w-[68ch] text-muted">{category.description}</p>
+    <ContentList items={view.items} page={view.page} totalPages={view.totalPages} total={view.total} base={`/kategori/${category.slug}`} current={category.slug} />
+  </main>
+</BaseLayout>

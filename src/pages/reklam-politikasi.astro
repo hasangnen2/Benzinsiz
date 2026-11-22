@@ -1,0 +1,21 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { pageMeta } from '../lib/site';
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Reklam ve sponsorlu içerik', href: '/reklam-politikasi' },
+];
+---
+
+<PageLayout title="Reklam ve sponsorlu içerik" description={pageMeta('reklam')} crumbs={crumbs}>
+  <p>Reklam yayının geliridir. Haberin, rehberin ve karşılaştırmanın yerine geçmez. Bu ayrım, reklamveren ile editör aynı kişi olsa bile düşmez.</p>
+  <h2>Reklam alanı</h2>
+  <p>Her alan “Reklam” etiketi taşır ve sabit yüksekliktedir. Yükseklik, reklam gelmeden de durur; sayfa zıplamaz. Bir sayfada en fazla dört alan vardır. İlk ekranda bir alan hedeflenir. Otomatik reklam kodu kullanılmaz.</p>
+  <p>Ana sayfada alanlar kahraman bölümünün altında ve “Bugün bilmen gerekenler” bölümünden sonradır. Yazıda alan, ikinci paragraftan sonra, ortada ve sona yakın yerdedir. Geniş ekranda bir alan yan sütunda yapışık durur. Dar ekranda ilk yazı içi alan, yan sütunla birlikte ilk ekranı iki reklamla doldurmasın diye gizlenir.</p>
+  <p>Reklam betiği, çerezde reklam seçimi “evet” olmadan yüklenmez. Seçim yokken alan boş çerçeve olarak kalır. Google sertifikalı bir izin bandı bağlanırsa, reklam ancak depolama izni ve bir reklam amacı birlikte gelince açılır.</p>
+  <h2>Sponsorlu içerik ve bağlı bağlantı</h2>
+  <p>Bir markanın bedel karşılığı yazdırdığı metin, başlığın yanında “Sponsorlu içerik” diye belirtilir. Bağlı (affiliate) bağlantı aynı şekilde belirtilir ve <code>rel="sponsored"</code> taşır. Sponsor başlığı, rakamı ve düzeltmeyi belirleyemez. Kaynaksız rakam sponsorlu metinde de yazılmaz.</p>
+  <h2>Satış kaydı</h2>
+  <p>Yayıncı kimliği <code>ads.txt</code> dosyasına, ortam değişkenindeki AdSense yayıncı numarasından yazılır. Numara <code>pub-</code> ile başlayan bir sayı değilse dosyada satış satırı üretilmez. Başka bir ağ eklenmeden o ağa alan satılmaz.</p>
+  <p>Reklam vermek veya bu politikayı sormak için <a href="/iletisim?konu=reklam">iletişim</a> sayfasında reklam konusunu seç. Okur editörü en geç iki iş günü içinde yanıtlar.</p>
+</PageLayout>

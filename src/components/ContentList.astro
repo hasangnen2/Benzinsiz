@@ -1,0 +1,68 @@
+---
+import ArticleCard from './ArticleCard.astro';
+import { categories } from '../lib/site';
+import type { ArticleModel } from '../lib/articles';
+
+interface Props {
+  items: ArticleModel[];
+  page: number;
+  totalPages: number;
+  total: number;
+  base: string;
+  current?: string;
+}
+const { items, page, totalPages, total, base, current } = Astro.props;
+const prev = page > 2 ? `${base}/sayfa/${page - 1}` : page === 2 ? base : undefined;
+const next = page < totalPages ? `${base}/sayfa/${page + 1}` : undefined;
+const filters = [
+  { href: '/haber', label: 'Haberler', key: 'haber' },
+  { href: '/rehber', label: 'Rehberler', key: 'rehber' },
+  ...categories.map((item) => ({ href: `/kategori/${item.slug}`, label: item.name, key: item.slug })),
+];
+---
+
+<nav aria-label="Kategoriler" class="mb-6">
+  <ul class="flex gap-2 overflow-x-auto pb-1">
+    {
+      filters.map((filter) => {
+        const active = current === filter.key;
+        return (
+          <li>
+            <a
+              href={filter.href}
+              aria-current={active ? 'page' : undefined}
+              class:list={[
+                'inline-flex min-h-11 items-center rounded-full border px-3 text-sm font-semibold whitespace-nowrap',
+                active ? 'border-navy bg-navy text-cream' : 'border-line bg-white',
+              ]}
+            >
+              {filter.label}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>
+
+<p class="m-0 mb-4 text-sm text-meta">{total} yazı</p>
+
+{
+  items.length === 0 ? (
+    <p>Bu başlıkta henüz yazı yok. Yeni metinler yayımlanınca burada listelenir.</p>
+  ) : (
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map((article) => <ArticleCard article={article} />)}
+    </div>
+  )
+}
+
+{
+  totalPages > 1 && (
+    <nav class="mt-8 flex flex-wrap items-center gap-3" aria-label="Sayfalar">
+      {prev ? <a class="btn btn-line" href={prev} rel="prev">Önceki</a> : <span class="btn btn-line opacity-50">Önceki</span>}
+      <span>Sayfa {page} / {totalPages}</span>
+      {next ? <a class="btn btn-line" href={next} rel="next">Sonraki</a> : <span class="btn btn-line opacity-50">Sonraki</span>}
+    </nav>
+  )
+}

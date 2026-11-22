@@ -1,0 +1,18 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import ArticleView from '../../components/ArticleView.astro';
+import { articleSlug } from '../../lib/articles';
+
+export async function getStaticPaths() {
+  const now = Date.now();
+  const entries = await getCollection('articles', ({ data, id }) => {
+    return data.type === 'haber' && !data.draft && data.publishedAt.getTime() <= now && id.startsWith('haber/');
+  });
+  return entries.map((entry) => ({ params: { slug: articleSlug(entry.id) } }));
+}
+
+const entry = await getEntry('articles', `haber/${Astro.params.slug}`);
+if (!entry) throw new Error('Haber bulunamadı');
+---
+
+<ArticleView entry={entry} />

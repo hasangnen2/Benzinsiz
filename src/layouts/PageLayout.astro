@@ -1,0 +1,25 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import type { Crumb } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  crumbs: Crumb[];
+  updated?: string;
+  noindex?: boolean;
+}
+const { title, description, crumbs, updated = '22 Kasım 2026', noindex = false } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} crumbs={crumbs} noindex={noindex}>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <article class="prose">
+      <h1 class="font-serif text-[2.1rem] leading-tight text-navy">{title}</h1>
+      <p class="text-sm text-meta">Güncelleme: {updated}</p>
+      <slot />
+    </article>
+  </main>
+</BaseLayout>

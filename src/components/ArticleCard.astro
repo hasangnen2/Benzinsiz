@@ -1,0 +1,25 @@
+---
+import Cover from './Cover.astro';
+import { coverTone } from '../lib/site';
+import type { ArticleModel } from '../lib/articles';
+
+interface Props {
+  article: ArticleModel;
+  heading?: 'h2' | 'h3';
+}
+const { article, heading = 'h3' } = Astro.props;
+const Tag = heading;
+---
+
+<article class="card">
+  <a href={article.href} class="card-link block text-inherit hover:text-inherit">
+    <Cover image={article.heroImage} alt={article.heroAlt ?? ''} tone={coverTone(article.categorySlug)} />
+    <div class="px-5 py-5">
+      <p class="tag m-0">{article.categoryName}</p>
+      <Tag class="mt-2 mb-2 font-serif text-[1.3rem] leading-snug">
+        {article.title}
+      </Tag>
+      <p class="m-0 text-sm text-meta">{article.minutes} dk okuma</p>
+    </div>
+  </a>
+</article>

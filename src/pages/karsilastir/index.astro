@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { allComparisons } from '../../lib/comparisons';
+import { pageMeta } from '../../lib/site';
+
+const pairs = allComparisons();
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Karşılaştırma', href: '/karsilastir' },
+];
+const description = pageMeta('karsilastir');
+---
+
+<BaseLayout title="Karşılaştırma" description={description} crumbs={crumbs}>
+  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+    <Breadcrumb crumbs={crumbs} />
+    <h1 class="mb-3 font-serif text-4xl">Karşılaştırma</h1>
+    <p class="max-w-[68ch] text-muted">{description} Ters yazılan adres, kalıcı sıraya 301 ile döner.</p>
+    <div class="grid gap-5 md:grid-cols-3">
+      {
+        pairs.map((pair) => (
+          <a href={pair.href} class="card card-link block p-6 text-inherit hover:text-inherit">
+            <p class="tag m-0">Karşılaştırma</p>
+            <h2 class="mt-2 mb-2 font-serif text-2xl">{pair.a.name} ve {pair.b.name}</h2>
+            <p class="m-0 text-muted">{pair.a.brand} / {pair.b.brand}</p>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+interface Props {
+  size?: number;
+  tone?: 'dark' | 'light';
+}
+const { size = 40, tone = 'dark' } = Astro.props;
+const ring = tone === 'dark' ? '#2BD9A4' : '#0F6B6B';
+const bolt = tone === 'dark' ? '#F4F1E8' : '#0A1F3C';
+---
+
+<svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
+  <circle
+    cx="24"
+    cy="24"
+    r="20"
+    fill="none"
+    stroke={ring}
+    stroke-width="3.6"
+    stroke-linecap="round"
+    stroke-dasharray="104.2 21.5"
+    transform="rotate(-59 24 24)"></circle>
+  <polygon points="26.5,14.8 19.8,25.7 24,25.7 21.5,34 29,22.3 24.8,22.3" fill={bolt}></polygon>
+</svg>

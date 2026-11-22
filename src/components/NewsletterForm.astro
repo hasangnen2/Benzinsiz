@@ -1,0 +1,76 @@
+---
+import { integrations } from '../lib/site';
+
+interface Props {
+  compact?: boolean;
+  id?: string;
+}
+const { compact = false, id = 'bulten' } = Astro.props;
+const runtime = integrations();
+const endpoint = runtime.newsletterEndpoint;
+const format = runtime.newsletterFormat;
+---
+
+<form
+  id={id}
+  class:list={['newsletter flex w-full min-w-0 flex-wrap gap-2.5', compact ? 'mt-8' : 'flex-1 basis-full sm:basis-[360px]']}
+  data-newsletter
+  data-endpoint={endpoint}
+  data-format={format}
+  novalidate
+>
+    <div class:list={['field', compact ? 'min-w-full' : 'w-full min-w-0 flex-1 sm:min-w-[12rem]']}>
+    <label class={compact ? '' : 'sr-only'} for={`${id}-email`}>E-posta adresin</label>
+    <input id={`${id}-email`} name="email" type="email" autocomplete="email" required placeholder="E-posta adresin" />
+  </div>
+  <p class="hp" aria-hidden="true">
+    <label for={`${id}-company`}>Şirket</label>
+    <input id={`${id}-company`} name="company" tabindex="-1" autocomplete="off" />
+  </p>
+  <button class:list={['btn', compact ? '' : 'btn-mint']} type="submit">Abone ol</button>
+  <p class="m-0 min-h-6 w-full text-sm" role="status" data-newsletter-status></p>
+</form>
+
+<script>
+  const forms = document.querySelectorAll<HTMLFormElement>('[data-newsletter]');
+  forms.forEach((form) => {
+    if (form.dataset.bound === '1') return;
+    form.dataset.bound = '1';
+    const status = form.querySelector<HTMLElement>('[data-newsletter-status]');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      if (String(data.get('company') || '').trim()) {
+        if (status) status.textContent = 'Gönderilemedi.';
+        return;
+      }
+      const email = String(data.get('email') || '').trim();
+      if (!email.includes('@')) {
+        if (status) status.textContent = 'Geçerli bir e-posta yaz.';
+        return;
+      }
+      const endpoint = form.dataset.endpoint || '';
+      if (!endpoint) {
+        if (status) status.textContent = 'Bülten servisi henüz bağlı değil. Adres kaydedilmedi.';
+        return;
+      }
+      const button = form.querySelector('button');
+      if (button) button.disabled = true;
+      try {
+        const format = form.dataset.format === 'form' ? 'form' : 'json';
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: format === 'json' ? { 'content-type': 'application/json', accept: 'application/json' } : { 'content-type': 'application/x-www-form-urlencoded' },
+          body: format === 'json' ? JSON.stringify({ email }) : new URLSearchParams({ email }),
+        });
+        if (!response.ok) throw new Error('status');
+        if (status) status.textContent = 'Adresin alındı. Servis onayını e-postandan kontrol et.';
+        form.reset();
+      } catch {
+        if (status) status.textContent = 'Gönderilemedi. Bir süre sonra yeniden dene.';
+      } finally {
+        if (button) button.disabled = false;
+      }
+    });
+  });
+</script>

@@ -1,0 +1,31 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { pageMeta } from '../lib/site';
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Yayın ilkeleri', href: '/yayin-ilkeleri' },
+];
+---
+
+<PageLayout title="Yayın ilkeleri" description={pageMeta('ilkeler')} crumbs={crumbs}>
+  <p>Bu ilkeler haber, rehber, inceleme, karşılaştırma ve araç sayfalarının tamamı için geçerlidir. Yayın yönetmeni, ilkeden sapmayı yayımlamaz.</p>
+  <h2>Başlık ve açıklama</h2>
+  <p>Başlık, metnin konusunu söyler. Merak boşluğu, şok, abartı ve “kaçırma” dili kullanılmaz. Meta açıklama, sayfadaki ilk iddiayla aynıdır. Okur başlıkta gördüğü rakamı veya vaadi metinde bulur. Bulamazsa başlık değişir, metin şişirilmez.</p>
+  <h2>Rakam</h2>
+  <p>Fiyat, menzil, batarya, şarj gücü, süre, garanti, tarife ve vergi oranı, kaynak adresi ve güncelleme tarihiyle birlikte girer. Alan boşsa sayfada köşeli parantez durur. Editör o boşluğu sektör ortalaması, broşür hatırası veya model çıktısıyla doldurmaz.</p>
+  <p>Aynı addaki iki sayı birbirinin yerine geçmez. Soket ile istasyon, satış ile tescil, teslim fiyatı ile ÖTV matrahı, tip onay menzili ile yol menzili ayrı satırdır.</p>
+  <h2>Kaynak</h2>
+  <p>Önce kurumun, üreticinin veya yasanın kendi metni gelir. Haber aktarımı ancak o metin açılamadığında ve “aktarım” diye yazılarak kullanılır. Kaynaklar yazının sonundadır. Bağlantı çalışmıyorsa kaynak adı durur, adres yeniden bulununca eklenir.</p>
+  <p>İsimsiz kaynak, tek başına rakam taşıyamaz. Kamuya açık belge varken kapalı bir anlatıya dayanılmaz.</p>
+  <h2>Tarih</h2>
+  <p>Her yazıda görünür yayın tarihi ve güncelleme tarihi vardır. Verinin dönemi, yazının yayın günü diye sunulmaz. Ekim tablosu kasımda yayımlanmışsa her iki tarih de okunur.</p>
+  <h2>Türler</h2>
+  <p>Haber güncel kaydı işler. Rehber karar ve kurulum sırasını toplar. İnceleme, ölçülmemiş hız ve tüketimi boş bırakır. Karşılaştırma, kayıtlı veriden üretilir ve kazanan seçmez. Hesaplayıcı, okurun girdiği sayıya göre sonuç yazar.</p>
+  <h2>Düzeltme ve güncelleme</h2>
+  <p>Yanlışlık gizlenmez, sayfa sessizce silinerek örtülmez. Düzeltme <a href="/duzeltme-politikasi">düzeltme politikasına</a> göre işlenir ve güncelleme tarihinde görünür. Bağlam değiştiyse bu bir düzeltme değil güncellemedir; eski cümle yanlış gibi sunulmaz.</p>
+  <h2>Bağımsızlık</h2>
+  <p>Reklam alanı etiketlidir. Sponsorlu içerik ve bağlı bağlantı başlığın yanında belirtilir. Sponsor başlığı, rakamı ve düzeltme kararını belirlemez. Ayrıntı <a href="/reklam-politikasi">reklam politikasındadır</a>.</p>
+  <p>Editör, sattığı veya ortağı olduğu bir ürünü haber diye yazmaz. Böyle bir bağ varsa metin yayımlanmadan sponsorlu işaretlenir.</p>
+  <h2>Okur</h2>
+  <p>Okur düzeltme, reklam ve KVKK başvurusunu <a href="/iletisim">iletişim</a> sayfasından iletir. Okur editörü en geç iki iş günü içinde yanıtlar. Köşeli parantez hata değildir; kaynak gönderilirse kayıt açılır.</p>
+</PageLayout>

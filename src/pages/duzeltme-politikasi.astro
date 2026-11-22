@@ -1,0 +1,25 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { pageMeta } from '../lib/site';
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'Düzeltme politikası', href: '/duzeltme-politikasi' },
+];
+---
+
+<PageLayout title="Düzeltme politikası" description={pageMeta('duzeltme')} crumbs={crumbs}>
+  <p>Yanlış bir rakam, ad, tarih veya bağlam görürsen <a href="/iletisim?konu=duzeltme">iletişim formundan</a> düzeltme konusunu seç. Yazının adresini, hatalı cümleyi ve dayanağın olan kaynağın bağlantısını yaz.</p>
+  <h2>Süre</h2>
+  <p>Okur editörü isteği en geç iki iş günü içinde yanıtlar. Düzeltme kabul edilirse metin değişir, güncelleme tarihi yenilenir ve değişen hüküm okurun göreceği yerde durur. Kabul edilmezse gerekçe aynı sürede yazılır. Kaynak kapalıysa veya iddia belgeden okunamıyorsa düzeltme bekletilir; bu bekleyiş gerekçeyle bildirilir.</p>
+  <h2>Ne düzeltilir</h2>
+  <ul>
+    <li>Kaynağın söylediğinden farklı yazılmış rakam, ad, tarih veya oran.</li>
+    <li>Başka bir ölçüyü bu ölçüymüş gibi sunan cümle. Satış ile tescil, soket ile istasyon, matrah ile teslim fiyatı buna girer.</li>
+    <li>Aktarımın, kurumun kendi metni gibi yazılması.</li>
+  </ul>
+  <h2>Ne hata değildir</h2>
+  <p>Köşeli parantez, hata değildir. Veri henüz girilmemiş alandır. O alan için kaynak bağlantısı gönderirsen veri editörü kaydı işler. Yeni bir ayın tablosu, eski ayı yanlış yapmaz. Eski sayfa güncellenir, dönemi belirtilir.</p>
+  <h2>Silinmez</h2>
+  <p>Hata, sayfayı yok ederek kapatılmaz. Yazar adresi değişirse eski adres 301 ile yeni adrese gider. Kaldırılması gereken bir metin olursa yerine kısa bir açıklama konur: neyin, neden kalktığı.</p>
+  <p>Düzeltme notu sponsorlu metinde de aynıdır. Reklamveren, aleyhine olan düzeltmeyi durduramaz.</p>
+</PageLayout>

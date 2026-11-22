@@ -1,0 +1,72 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { contactEmail, integrations, pageMeta } from '../lib/site';
+const email = contactEmail();
+const endpoint = integrations().contactEndpoint;
+const crumbs = [
+  { name: 'Ana sayfa', href: '/' },
+  { name: 'İletişim', href: '/iletisim' },
+];
+---
+
+<PageLayout title="İletişim" description={pageMeta('iletisim')} crumbs={crumbs}>
+  <p>Okur editörü başvuruyu en geç iki iş günü içinde yanıtlar. Düzeltmenin işlenme kuralı <a href="/duzeltme-politikasi">düzeltme politikasındadır</a>. Kişisel veri istemi <a href="/kvkk">aydınlatma metnine</a> bağlıdır.</p>
+  <ul>
+    <li>Düzeltme: yazının adresi, hatalı cümle ve kaynak bağlantısı.</li>
+    <li>Reklam: yayın alanı veya sponsorlu içerik talebi. Başlık ve rakam bu formdan satın alınmaz.</li>
+    <li>KVKK başvurusu: adın, yanıt adresin ve istemin. Kimlik görüntüsü bu formun alanı değildir.</li>
+    <li>Genel: kadro, künye ve yayın ilkesi soruları.</li>
+  </ul>
+  <p>
+    E-posta:
+    {email ? <a href={`mailto:${email}`}>{email}</a> : <span class="missing">[e-posta adresi]</span>}
+    {' '}
+    Sunucu ucu bağlı değilse form mesajı kaydetmez; e-posta programını açar. Adres de yoksa ekranda “kaydedilmedi” yazar.
+  </p>
+  <form class="not-prose grid max-w-xl gap-4" method="post" action={endpoint || undefined} data-contact>
+    <div class="field">
+      <label for="ad">Ad</label>
+      <input id="ad" name="name" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="eposta">E-posta</label>
+      <input id="eposta" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="konu">Konu</label>
+      <select id="konu" name="topic">
+        <option value="genel">Genel</option>
+        <option value="duzeltme">Düzeltme</option>
+        <option value="reklam">Reklam</option>
+        <option value="kvkk">KVKK başvurusu</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="mesaj">Mesaj</label>
+      <textarea id="mesaj" name="message" required></textarea>
+    </div>
+    <button class="btn w-fit" type="submit">Gönder</button>
+    <p class="m-0 text-sm" role="status" id="contact-status"></p>
+  </form>
+</PageLayout>
+
+<script define:vars={{ email, endpoint }}>
+  const params = new URLSearchParams(location.search);
+  const topic = params.get('konu');
+  const select = document.querySelector('#konu');
+  if (select && topic && [...select.options].some((option) => option.value === topic)) select.value = topic;
+  const form = document.querySelector('[data-contact]');
+  const status = document.querySelector('#contact-status');
+  form?.addEventListener('submit', (event) => {
+    if (endpoint) return;
+    event.preventDefault();
+    if (!email) {
+      if (status) status.textContent = 'E-posta adresi henüz tanımlı değil. Mesaj kaydedilmedi.';
+      return;
+    }
+    const data = new FormData(form);
+    const subject = encodeURIComponent(`Benzinsiz: ${data.get('topic')}`);
+    const body = encodeURIComponent(`${data.get('name')} <${data.get('email')}>\n\n${data.get('message')}`);
+    location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  });
+</script>

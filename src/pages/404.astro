@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageMeta } from '../lib/site';
+const description = pageMeta('bulunamadi');
+---
+
+<BaseLayout title="Sayfa bulunamadı" description={description} noindex>
+  <main id="icerik" class="wrap py-16" tabindex="-1">
+    <p class="tag m-0">404</p>
+    <h1 class="mt-2 mb-3 font-serif text-4xl">Bu sayfa yok</h1>
+    <p class="max-w-[68ch] text-muted">{description}</p>
+    <form class="my-6 flex flex-wrap gap-2" action="/ara" method="get" role="search">
+      <label class="sr-only" for="missing-q">Sitede ara</label>
+      <input id="missing-q" class="min-h-11 min-w-[220px] flex-1 rounded-md border border-line bg-white px-3" name="q" type="search" placeholder="Rehber, haber veya model ara" required />
+      <button class="btn" type="submit">Ara</button>
+    </form>
+    <ul>
+      <li><a href="/">Ana sayfa</a></li>
+      <li><a href="/haber">Haberler</a></li>
+      <li><a href="/rehber">Rehberler</a></li>
+      <li><a href="/karsilastir">Karşılaştırma</a></li>
+      <li><a href="/arac/hesaplayici">Şarj maliyeti hesaplayıcı</a></li>
+    </ul>
+  </main>
+</BaseLayout>

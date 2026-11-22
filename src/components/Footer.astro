@@ -1,0 +1,77 @@
+---
+import Logo from './Logo.astro';
+import Wordmark from './Wordmark.astro';
+import { categories, siteName, slogan } from '../lib/site';
+import { copyrightYear } from '../lib/dates';
+
+const year = copyrightYear();
+const columns = [
+  {
+    id: 'ft-kat',
+    title: 'Kategoriler',
+    links: [
+      { href: '/haber', label: 'Haberler' },
+      { href: '/rehber', label: 'Rehberler' },
+      { href: '/kategori/inceleme', label: 'İncelemeler' },
+      { href: '/karsilastir', label: 'Karşılaştırma' },
+      { href: '/kategori/sarj', label: 'Şarj' },
+      ...categories
+        .filter((item) => !['inceleme', 'sarj'].includes(item.slug))
+        .map((item) => ({ href: `/kategori/${item.slug}`, label: item.name })),
+    ],
+  },
+  {
+    id: 'ft-kurum',
+    title: 'Kurumsal',
+    links: [
+      { href: '/hakkimizda', label: 'Hakkımızda' },
+      { href: '/kunye', label: 'Künye' },
+      { href: '/yazar', label: 'Editör kadrosu' },
+      { href: '/yayin-ilkeleri', label: 'Yayın ilkeleri' },
+      { href: '/duzeltme-politikasi', label: 'Düzeltme politikası' },
+      { href: '/iletisim', label: 'İletişim' },
+    ],
+  },
+  {
+    id: 'ft-yasal',
+    title: 'Yasal',
+    links: [
+      { href: '/gizlilik', label: 'Gizlilik politikası' },
+      { href: '/cerez-politikasi', label: 'Çerez politikası' },
+      { href: '/kvkk', label: 'KVKK aydınlatma metni' },
+      { href: '/reklam-politikasi', label: 'Reklam ve sponsorlu içerik' },
+    ],
+  },
+];
+---
+
+<footer class="on-dark bg-ink text-fog">
+  <div class="wrap grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <a href="/" class="mb-3 inline-flex items-center gap-2.5 text-cream hover:text-cream">
+        <Logo size={32} />
+        <Wordmark class="text-2xl" />
+      </a>
+      <p class="m-0 text-sm leading-relaxed text-gold">{slogan}</p>
+    </div>
+    {
+      columns.map((column) => (
+        <nav aria-labelledby={column.id} class="flex flex-col">
+          <h2 id={column.id} class="mb-1 text-sm font-semibold text-cream">{column.title}</h2>
+          {column.links.map((link) => (
+            <a href={link.href} class="inline-flex min-h-11 items-center text-sm hover:text-mint">{link.label}</a>
+          ))}
+        </nav>
+      ))
+    }
+  </div>
+  <div class="wrap flex flex-wrap items-center justify-between gap-3 border-t border-inkline py-5 text-sm">
+    <p class="m-0">© {year} {siteName}. Tüm hakları saklıdır.</p>
+    <p class="m-0 flex flex-wrap gap-4">
+      <a class="inline-flex min-h-11 items-center hover:text-mint" href="/rss.xml">RSS</a>
+      <a class="inline-flex min-h-11 items-center hover:text-mint" href="/sitemap-index.xml">Site haritası</a>
+      <a class="inline-flex min-h-11 items-center hover:text-mint" href="/admin">Yönetim</a>
+      <button type="button" class="inline-flex min-h-11 items-center hover:text-mint" data-consent-open>Çerez tercihleri</button>
+    </p>
+  </div>
+</footer>

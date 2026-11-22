@@ -1,0 +1,44 @@
+[
+  {
+    "id": "model-a",
+    "slug": "model-a",
+    "name": "[Model A]",
+    "brand": "[Marka A]",
+    "priceTry": null,
+    "rangeKm": null,
+    "batteryKwh": null,
+    "dcKw": null,
+    "charge10to80Min": null,
+    "warranty": null,
+    "source": { "name": null, "url": null },
+    "updatedAt": null
+  },
+  {
+    "id": "model-b",
+    "slug": "model-b",
+    "name": "[Model B]",
+    "brand": "[Marka B]",
+    "priceTry": null,
+    "rangeKm": null,
+    "batteryKwh": null,
+    "dcKw": null,
+    "charge10to80Min": null,
+    "warranty": null,
+    "source": { "name": null, "url": null },
+    "updatedAt": null
+  },
+  {
+    "id": "model-c",
+    "slug": "model-c",
+    "name": "[Model C]",
+    "brand": "[Marka C]",
+    "priceTry": null,
+    "rangeKm": null,
+    "batteryKwh": null,
+    "dcKw": null,
+    "charge10to80Min": null,
+    "warranty": null,
+    "source": { "name": null, "url": null },
+    "updatedAt": null
+  }
+]
