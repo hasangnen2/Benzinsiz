@@ -1,6 +1,10 @@
 ---
 title: "Batarya sağlık durumu ve garanti metninde aranacaklar"
 description: "Sağlık durumu, bataryanın sertifikalı performansına göre yüzdesidir. Garanti yılı ve kilometresi, üreticinin yazılı metni olmadan doldurulmaz."
+heroImage: ../../../assets/covers/kapak-bakim-batarya.jpg
+heroAlt: "Kapağı açık sergilenen bir elektrikli araç batarya paketi"
+heroCredit: "Rudolf Simon · CC BY-SA 3.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Lithium-Ion_Battery_for_BMW_i3_-_Battery_Pack.JPG"
 type: rehber
 category: bakim
 author: benzinsiz-editoru

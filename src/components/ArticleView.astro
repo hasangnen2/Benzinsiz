@@ -68,7 +68,7 @@ const [slotEarly, slotMid, slotLate] = rendered.slots;
   crumbs={crumbs}
   extraGraph={[newsArticle]}
 >
-  <main id="icerik" class="wrap py-8" tabindex="-1">
+  <main id="icerik" class:list={['wrap py-8', article.type === 'haber' && 'news']} tabindex="-1">
     <Breadcrumb crumbs={crumbs} />
     <div class="xl:grid xl:grid-cols-[minmax(0,1fr)_300px] xl:gap-10">
       <article data-pagefind-body>
@@ -79,8 +79,8 @@ const [slotEarly, slotMid, slotLate] = rendered.slots;
         </p>
         {article.sponsored && <p class="notice">Sponsorlu içerik. Bu metin bir reklamverenle hazırlanmıştır.</p>}
         {article.affiliate && <p class="notice">Bu yazı bağlı (affiliate) bağlantı içerebilir. Bağlantılar rel="sponsored" taşır.</p>}
-        <h1 class="mt-2 mb-3 font-serif text-[2rem] leading-tight font-bold sm:text-[2.4rem]">{article.title}</h1>
-        <p class="m-0 max-w-[68ch] text-[1.0625rem] leading-relaxed text-muted">{article.description}</p>
+        <h1 class:list={['mt-2 mb-3', article.type === 'haber' ? 'news-headline' : 'font-serif text-[2rem] leading-tight font-bold sm:text-[2.4rem]']}>{article.title}</h1>
+        <p class:list={['m-0 max-w-[68ch]', article.type === 'haber' ? 'news-dek' : 'text-[1.0625rem] leading-relaxed text-muted']}>{article.description}</p>
         <p class="mt-4 mb-5 text-sm text-meta">
           <a href={`/yazar/${article.authorSlug}`}>{article.authorName}</a>
           {' · '}
@@ -90,7 +90,14 @@ const [slotEarly, slotMid, slotLate] = rendered.slots;
           {' · '}
           {article.minutes} dk okuma
         </p>
-        <Cover image={article.heroImage} alt={article.heroAlt ?? article.title} tone={coverTone(article.categorySlug)} hero priority />
+        <Cover image={article.heroImage} alt={article.heroAlt ?? article.title} credit={article.heroCredit ?? ''} tone={coverTone(article.categorySlug)} hero priority />
+        {
+          article.heroCreditUrl && (
+            <p class="cover-source">
+              <a href={article.heroCreditUrl}>Fotoğrafın kaynağı</a>
+            </p>
+          )
+        }
         <aside class="summary-box">
           <h2>Kısaca</h2>
           <ul>
@@ -186,7 +193,8 @@ const [slotEarly, slotMid, slotLate] = rendered.slots;
             {related.map((item) => (
               <article class="card p-5">
                 <p class="tag m-0">{item.categoryName}</p>
-                <h3 class="mt-2 mb-2 font-serif text-xl"><a href={item.href}>{item.title}</a></h3>
+                <h3 class:list={[article.type === 'haber' ? 'news-title' : 'mt-2 mb-2 font-serif text-xl']}><a href={item.href}>{item.title}</a></h3>
+                {article.type === 'haber' && <p class="news-dek">{item.description}</p>}
                 <p class="m-0 text-sm text-meta">{item.minutes} dk okuma</p>
               </article>
             ))}

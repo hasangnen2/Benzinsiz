@@ -52,7 +52,7 @@ const filters = [
     <p>Bu başlıkta henüz yazı yok. Yeni metinler yayımlanınca burada listelenir.</p>
   ) : (
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {items.map((article) => <ArticleCard article={article} />)}
+      {items.map((article) => <ArticleCard article={article} readable={article.type === 'haber'} />)}
     </div>
   )
 }

@@ -1,6 +1,10 @@
 ---
 title: "İncelemede ölçülmeyen satır boş bırakılır"
 description: "Model incelemesi; fiyat, menzil ve şarj süresini ancak ölçümün veya üretici sayfasının adresiyle yazar. Ölçülmeyen hız ve tüketim tahmini konulmaz."
+heroImage: ../../../assets/covers/kapak-inceleme-arac.jpg
+heroAlt: "Şarj kablosu takılı beyaz bir elektrikli otomobilin yakın görünüşü"
+heroCredit: "Jakob Härter · CC BY-SA 2.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Zoe_charging_Bettermann_Ladebox.jpg"
 type: rehber
 category: inceleme
 author: benzinsiz-editoru

@@ -25,10 +25,10 @@ const next = view.page < view.totalPages ? `/haber/sayfa/${view.page + 1}` : und
 ---
 
 <BaseLayout title={`Haberler, sayfa ${view.page}`} description={description} crumbs={crumbs} prev={prev} next={next}>
-  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+  <main id="icerik" class="news wrap py-8" tabindex="-1" data-pagefind-body>
     <Breadcrumb crumbs={crumbs} />
-    <h1 class="mb-3 font-serif text-4xl">Haberler</h1>
-    <p class="max-w-[68ch] text-muted">{description}</p>
+    <h1 class="news-page-title">Haberler</h1>
+    <p class="news-dek">Yeni haberler üstte. Başlığın altında haberin özeti var.</p>
     <ContentList items={view.items} page={view.page} totalPages={view.totalPages} total={view.total} base="/haber" current="haber" />
   </main>
 </BaseLayout>

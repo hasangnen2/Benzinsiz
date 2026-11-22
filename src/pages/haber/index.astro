@@ -15,10 +15,10 @@ const description = pageMeta('haber');
 ---
 
 <BaseLayout title="Haberler" description={description} crumbs={crumbs} next={view.totalPages > 1 ? '/haber/sayfa/2' : undefined}>
-  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+  <main id="icerik" class="news wrap py-8" tabindex="-1" data-pagefind-body>
     <Breadcrumb crumbs={crumbs} />
-    <h1 class="mb-3 font-serif text-4xl">Haberler</h1>
-    <p class="max-w-[68ch] text-muted">{description}</p>
+    <h1 class="news-page-title">Haberler</h1>
+    <p class="news-dek">Yeni haberler üstte. Başlığın altında haberin özeti var.</p>
     <ContentList items={view.items} page={1} totalPages={view.totalPages} total={view.total} base="/haber" current="haber" />
   </main>
 </BaseLayout>

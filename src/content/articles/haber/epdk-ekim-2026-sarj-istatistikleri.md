@@ -1,6 +1,10 @@
 ---
 title: "EPDK Ekim 2026: 49.703 ticari şarj soketi"
 description: "EPDK’nın Ekim 2026 istatistiğinde 506.372 elektrikli araç ve 49.703 ticari soket var. Bunun 28.075’i AC, 21.628’i DC. Soket, istasyon adedi değildir."
+heroImage: ../../../assets/covers/kapak-epdk-soket.jpg
+heroAlt: "Bir otoparkta sıra sıra duran ticari şarj soketleri"
+heroCredit: "Oregon Department of Transportation · CC BY 2.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:A_row_of_Tesla_chargers_at_Cannon_Beach_(52019964918).jpg"
 type: haber
 category: sarj
 author: benzinsiz-editoru

@@ -1,6 +1,10 @@
 ---
 title: "Togg T10F teslim fiyatı 15 Haziran 2026 listesinde"
 description: "Togg’un T10F sayfasında teslim fiyatı 1.884.980 TL’den başlar. ÖTV, KDV, MTV, plaka ve tescil dahildir. Sigorta ve kasko dahil değildir."
+heroImage: ../../../assets/covers/kapak-t10f-fiyat.jpg
+heroAlt: "Mavi Togg T10F, önden üç çeyrek görünüş"
+heroCredit: "Alexander-93 · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Togg_T10F_IAA_2025_DSC_1904.jpg"
 type: haber
 category: modeller
 author: benzinsiz-editoru

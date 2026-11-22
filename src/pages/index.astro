@@ -79,7 +79,7 @@ const description = pageMeta('home');
         <section class="grid items-start gap-7 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
           <article class="card">
             <a href={featured.href} class="block text-inherit hover:text-inherit" tabindex="-1" aria-hidden="true">
-              <Cover image={featured.heroImage} alt="" tone={coverTone(featured.categorySlug)} hero priority />
+              <Cover image={featured.heroImage} alt="" credit={featured.heroCredit ?? ''} tone={coverTone(featured.categorySlug)} hero priority />
             </a>
             <div class="px-6 py-6 sm:px-7 sm:py-7">
               <p class="tag m-0">{featured.typeLabel}</p>
@@ -101,7 +101,7 @@ const description = pageMeta('home');
                 {news.map((item) => (
                   <li class="flex gap-3 border-b border-line py-3 last:border-b-0">
                     {item.breaking ? <span class="breaking">Son dakika</span> : <time class="min-w-12 text-sm font-semibold text-meta" datetime={istanbulIso(item.publishedAt)}>{formatNewsStamp(item.publishedAt)}</time>}
-                    <a class="font-medium leading-snug" href={item.href}>{item.title}</a>
+                    <a class="news-side" href={item.href}>{item.title}</a>
                   </li>
                 ))}
               </ul>

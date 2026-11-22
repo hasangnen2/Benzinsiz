@@ -1,6 +1,10 @@
 ---
 title: "GİB listesinde elektrikli otomobil ÖTV dilimleri"
 description: "GİB’in 31 Temmuz 2026 tarihli (II) sayılı liste dosyasında yalnızca elektrik motorlu binek otomobilin ÖTV’si motor gücüne ve matraha göre dört satırdır."
+heroImage: ../../../assets/covers/kapak-gib-otv.jpg
+heroAlt: "Kalemle doldurulan basılı bir belge"
+heroCredit: "Unsplash"
+heroCreditUrl: "https://unsplash.com/license"
 type: haber
 category: mevzuat
 author: benzinsiz-editoru

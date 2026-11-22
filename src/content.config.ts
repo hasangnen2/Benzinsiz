@@ -36,6 +36,8 @@ const articles = defineCollection({
           .default([]),
         heroImage: image().optional(),
         heroAlt: z.string().min(1).optional(),
+        heroCredit: z.string().min(8).max(160).optional(),
+        heroCreditUrl: z.url().optional(),
         summary: z.array(z.string().min(10)).min(1).max(6),
         featured: z.boolean().default(false),
         breaking: z.boolean().default(false),

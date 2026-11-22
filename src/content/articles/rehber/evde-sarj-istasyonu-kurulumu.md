@@ -1,6 +1,10 @@
 ---
 title: "Evde şarj istasyonu kurulumu: adım adım"
 description: "Keşif, pano gücü, yetkili kurulum ve test. Fiyat ve güç değeri kaynak girilmeden köşeli parantezde kalır."
+heroImage: ../../../assets/covers/kapak-sarj-wallbox.jpg
+heroAlt: "Evin dış duvarına takılmış bir şarj ünitesi ve kablosu"
+heroCredit: "Ken Fields · CC BY-SA 2.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Closer_ChargePoint_Install_At_Home.jpg"
 type: rehber
 category: sarj
 author: benzinsiz-editoru

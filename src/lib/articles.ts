@@ -32,6 +32,8 @@ export interface ArticleModel {
   body: string;
   heroImage: ArticleEntry['data']['heroImage'];
   heroAlt: string | undefined;
+  heroCredit: string | undefined;
+  heroCreditUrl: string | undefined;
 }
 
 export function articleSlug(id: string) {
@@ -90,6 +92,8 @@ export function toModel(entry: ArticleEntry): ArticleModel {
     body,
     heroImage: entry.data.heroImage,
     heroAlt: entry.data.heroAlt,
+    heroCredit: entry.data.heroCredit,
+    heroCreditUrl: entry.data.heroCreditUrl,
   };
 }
 

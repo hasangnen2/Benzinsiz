@@ -1,6 +1,10 @@
 ---
 title: "Halka açık şarjda fiyat hangi kuralla ilan edilir"
 description: "Şarj hizmeti fiyatı, araca aktarılan enerjinin TL/kWh bedelidir. İşletmeci fiyatı sitesinde, dijital mecrada ve istasyonda eş zamanlı ilan eder."
+heroImage: ../../../assets/covers/kapak-mevzuat-sarj.jpg
+heroAlt: "Üzerinde kullanım yazısı bulunan halka açık bir şarj ünitesi"
+heroCredit: "D-Kuru · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:SMATRICS_charging_station_at_217_in_Gerlos,_Tyrol,_Austria-wallbox_PNr%C2%B00689.jpg"
 type: rehber
 category: mevzuat
 author: benzinsiz-editoru

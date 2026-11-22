@@ -1,6 +1,10 @@
 ---
 title: "Menzil cümlesi: tip onay ölçümü ile yol aynı şey değil"
 description: "Elektrik menzili, çekiş bataryası tükenene kadar şarj tüketme koşulunda gidilen yoldur. Broşürdeki tek kilometre, kış yolunun yerine geçmez."
+heroImage: ../../../assets/covers/kapak-menzil-ekran.jpg
+heroAlt: "Elektrikli bir aracın ekranında görünen kilometre"
+heroCredit: "AkiliDaniels · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Electric_Car_Display.jpg"
 type: rehber
 category: menzil
 author: benzinsiz-editoru

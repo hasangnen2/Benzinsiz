@@ -1,6 +1,10 @@
 ---
 title: "ODMD: Ekim 2026’da 64.939 otomobil satıldı"
 description: "ODMD tablosunda Ekim 2026 otomobil satışı 64.939, otomobil ve hafif ticari toplamı 80.334. Ekim 2025 otomobil satışı aynı tabloda 90.695."
+heroImage: ../../../assets/covers/kapak-odmd-satis.jpg
+heroAlt: "Satış parkında yan yana dizilmiş yeni otomobiller"
+heroCredit: "Luke Miller · Pexels"
+heroCreditUrl: "https://www.pexels.com/photo/line-of-new-cars-in-outdoor-parking-lot-29566905/"
 type: haber
 category: modeller
 author: benzinsiz-editoru

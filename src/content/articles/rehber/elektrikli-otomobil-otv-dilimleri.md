@@ -1,6 +1,10 @@
 ---
 title: "Elektrikli otomobilde ÖTV dilimi nasıl okunur"
 description: "Yalnızca elektrik motorlu binek otomobilde ÖTV, motor gücü ve matrahla dört satıra ayrılır. Oran, GİB’in 31 Temmuz 2026 tarihli liste dosyasından okunur."
+heroImage: ../../../assets/covers/kapak-maliyet-satir.jpg
+heroAlt: "Satırları kalemle işaretlenen basılı bir belge"
+heroCredit: "Unsplash"
+heroCreditUrl: "https://unsplash.com/license"
 type: rehber
 category: maliyet
 author: benzinsiz-editoru

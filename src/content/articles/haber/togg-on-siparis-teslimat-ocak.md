@@ -1,6 +1,10 @@
 ---
 title: "Togg ekranı: yeni ön sipariş Ocak ayında teslim edilebilir"
 description: "KARAR, 18 Kasım 2026’da Togg sipariş ekranındaki uyarıyı aktardı. Metin, o gün verilen ön siparişin teslimatının Ocak içinde gerçekleşebileceğini söylüyor."
+heroImage: ../../../assets/covers/kapak-togg-teslimat.jpg
+heroAlt: "Kapıları açık, sergilenen Togg T10F"
+heroCredit: "Metuboy · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Togg_Sedan_Front.jpg"
 type: haber
 category: modeller
 author: benzinsiz-editoru

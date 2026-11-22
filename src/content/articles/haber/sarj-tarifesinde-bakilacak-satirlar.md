@@ -1,6 +1,10 @@
 ---
 title: "Şarj tarifesinde bakılacak satırlar"
 description: "Birim fiyat, zaman dilimi ve kaynak satırı olmadan tarifeye rakam yazılmaz. Güncel değer veriye girilince haberde görünür."
+heroImage: ../../../assets/covers/kapak-sarj-tarife.jpg
+heroAlt: "Ekranı açık ticari şarj ünitesi ve prize takılı kablo"
+heroCredit: "Spotter2 · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Elektrisch_laadstation_voor_wagens_-_Aalter_-_2021-02.jpg"
 type: haber
 category: sarj
 author: benzinsiz-editoru

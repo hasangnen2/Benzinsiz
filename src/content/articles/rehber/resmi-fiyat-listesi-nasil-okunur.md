@@ -1,6 +1,10 @@
 ---
 title: "Resmi fiyat listesinde teslim bedeline ne girer"
 description: "Teslim fiyatının içine ÖTV, KDV, MTV ve tescilin girip girmediği, listeyi yayımlayanın kendi notundan okunur. Opsiyon, versiyon fiyatına sonradan eklenir."
+heroImage: ../../../assets/covers/kapak-fiyat-listesi.jpg
+heroAlt: "Açık alanda yan yana bekleyen yeni otomobiller"
+heroCredit: "Luke Miller · Pexels"
+heroCreditUrl: "https://www.pexels.com/photo/modern-car-dealership-with-bridge-view-29566911/"
 type: rehber
 category: modeller
 author: benzinsiz-editoru

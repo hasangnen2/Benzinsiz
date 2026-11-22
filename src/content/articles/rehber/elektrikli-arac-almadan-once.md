@@ -1,6 +1,10 @@
 ---
 title: "Elektrikli araç almadan önce kontrol edilecek 10 başlık"
 description: "Menzil, şarj, maliyet ve ikinci el için karar öncesi on kontrol başlığı. Rakam yalnızca kaynak işlenince yazılır."
+heroImage: ../../../assets/covers/kapak-alim-arac.jpg
+heroAlt: "Yolda duran beyaz bir elektrikli otomobil"
+heroCredit: "Unsplash"
+heroCreditUrl: "https://unsplash.com/license"
 type: rehber
 category: alim
 author: benzinsiz-editoru
