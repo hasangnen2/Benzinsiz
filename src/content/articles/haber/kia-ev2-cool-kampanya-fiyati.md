@@ -1,6 +1,10 @@
 ---
 title: "Kia EV2 Cool kampanyalı fiyat 1.749.000 TL"
 description: "Kia’nın 14 Kasım 2026’dan beri açık EV2 listesinde Cool’un kampanyalı fiyatı 1.749.000 TL. Liste fiyatı 1.819.000 TL, kampanya desteği 70.000 TL."
+heroImage: ../../../assets/covers/kapak-ev2.jpg
+heroAlt: "Gri Kia EV2, önden üç çeyrek görünüş"
+heroCredit: "Alexander Migl · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Kia_EV2_GT-Line_IMG_7787.jpg"
 type: haber
 category: modeller
 author: benzinsiz-editoru

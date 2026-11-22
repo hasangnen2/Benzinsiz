@@ -1,6 +1,10 @@
 ---
 title: "Frontera Elektrik 44 kWh GS 1.895.000 TL"
 description: "Opel’in Frontera Elektrik sayfasında 2026 model 44 kWh GS fiyatı 1.895.000 TL. Uzun menzil 54 kWh GS satırı 2.010.000 TL. Kampanya hücresi boş."
+heroImage: ../../../assets/covers/kapak-frontera.jpg
+heroAlt: "Beyaz Opel Frontera Elektrik, önden üç çeyrek görünüş"
+heroCredit: "Alexander-93 · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Opel_Frontera_C_Electric_DSC_0603.jpg"
 type: haber
 category: modeller
 author: benzinsiz-editoru

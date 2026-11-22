@@ -1,6 +1,10 @@
 ---
 title: "Citroën ë-C3 Max Kasım fiyatı 1.605.000 TL"
 description: "Citroën’in 22 Kasım 2026’da açık listesinde Max’ın Kasım fiyatı 1.605.000 TL. Liste fiyatı 1.725.000 TL. Liste 30 Kasım 2026’ya kadar geçerli."
+heroImage: ../../../assets/covers/kapak-ec3.jpg
+heroAlt: "Gri Citroën ë-C3, önden üç çeyrek görünüş"
+heroCredit: "Alexander Migl · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Citroen_%C3%AB-C3_IMG_4539.jpg"
 type: haber
 category: modeller
 author: benzinsiz-editoru

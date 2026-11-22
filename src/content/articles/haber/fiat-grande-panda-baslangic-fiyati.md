@@ -1,6 +1,10 @@
 ---
 title: "Grande Panda Elektrikli 1.609.900 TL’den başlıyor"
 description: "Fiat’ın kampanya sayfası, 2 Kasım–1 Aralık 2026 arasında başlangıç fiyatını 1.609.900 TL yazar. Bu indirim, 200.000 TL’lik %0 faizli krediyle birlikte kullanılamaz."
+heroImage: ../../../assets/covers/kapak-grande-panda.jpg
+heroAlt: "Sarı Fiat Grande Panda, önden üç çeyrek görünüş"
+heroCredit: "Alexander-93 · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Fiat_Grande_Panda_E_DSC_0734.jpg"
 type: haber
 category: modeller
 author: benzinsiz-editoru

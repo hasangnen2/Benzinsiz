@@ -1,6 +1,10 @@
 ---
 title: "Hyundai INSTER başlangıç fiyatı 1.520.000 TL"
 description: "Hyundai Türkiye’nin INSTER sayfası başlangıç fiyatını 1.520.000 TL yazar. Sürüm adı yoktur. Menzil cümleleri çeliştiği için bu haberde menzil yok."
+heroImage: ../../../assets/covers/kapak-inster.jpg
+heroAlt: "Beyaz Hyundai INSTER, önden üç çeyrek görünüş"
+heroCredit: "Alexander Migl · CC BY-SA 4.0"
+heroCreditUrl: "https://commons.wikimedia.org/wiki/File:Hyundai_Inster_DSC_7947.jpg"
 type: haber
 category: modeller
 author: benzinsiz-editoru
