@@ -788,18 +788,25 @@ export async function handleAdmin(req, res) {
     if (!Array.isArray(body)) return send(res, 400, { error: 'Araç listesi bekleniyor.' });
     const errors = validateCars(body);
     if (errors.length) return send(res, 400, { errors });
-    const clean = body.map((row) => ({
-      ...row,
-      id: row.slug,
-      priceTry: numberOrNull(row.priceTry),
-      rangeKm: numberOrNull(row.rangeKm),
-      batteryKwh: numberOrNull(row.batteryKwh),
-      dcKw: numberOrNull(row.dcKw),
-      charge10to80Min: numberOrNull(row.charge10to80Min),
-      warranty: row.warranty || null,
-      source: { name: row.source?.name || null, url: row.source?.url || null },
-      updatedAt: row.updatedAt || null,
-    }));
+    const previous = readJson('cars.json');
+    const clean = body.map((row) => {
+      const old = previous.find((item) => item.slug === row.slug) || {};
+      return {
+        ...old,
+        id: row.slug,
+        slug: row.slug,
+        name: row.name,
+        brand: row.brand,
+        priceTry: numberOrNull(row.priceTry),
+        rangeKm: numberOrNull(row.rangeKm),
+        batteryKwh: numberOrNull(row.batteryKwh),
+        dcKw: numberOrNull(row.dcKw),
+        charge10to80Min: numberOrNull(row.charge10to80Min),
+        warranty: row.warranty || null,
+        source: { name: row.source?.name || null, url: row.source?.url || null },
+        updatedAt: row.updatedAt || null,
+      };
+    });
     writeJson('cars.json', clean);
     logActivity('arac', `${clean.length} kayıt`);
     return send(res, 200, { ok: true });

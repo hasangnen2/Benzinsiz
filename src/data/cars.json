@@ -1,44 +1,284 @@
 [
   {
-    "id": "model-a",
-    "slug": "model-a",
-    "name": "[Model A]",
-    "brand": "[Marka A]",
-    "priceTry": null,
+    "id": "t10f-v1-rwd-standart",
+    "slug": "t10f-v1-rwd-standart",
+    "name": "T10F V1 RWD Standart Menzil",
+    "brand": "Togg",
+    "priceTry": 1884980,
     "rangeKm": null,
     "batteryKwh": null,
     "dcKw": null,
     "charge10to80Min": null,
     "warranty": null,
-    "source": { "name": null, "url": null },
-    "updatedAt": null
+    "rangeNote": null,
+    "chargeNote": null,
+    "motorNote": null,
+    "note": "Fiyat listesi bu sürümün menzilini, bataryasını ve şarj süresini yazmıyor. Ürün sayfasındaki “623 km’ye varan” ifade uzun menzil seçeneğinin üst sınırı; bu sürüme yazılmadı. Teslim fiyatına ÖTV, KDV, MTV, plaka ve tescil dahil; trafik sigortası ve kasko değil.",
+    "source": {
+      "name": "Togg, T10F fiyat listesi, 15 Haziran 2026",
+      "url": "https://www.togg.com.tr/t10f-price-list"
+    },
+    "sources": [
+      {
+        "name": "Togg, T10F fiyat listesi, 15 Haziran 2026",
+        "url": "https://www.togg.com.tr/t10f-price-list"
+      }
+    ],
+    "updatedAt": "2026-11-22"
   },
   {
-    "id": "model-b",
-    "slug": "model-b",
-    "name": "[Model B]",
-    "brand": "[Marka B]",
-    "priceTry": null,
+    "id": "t10f-v1-rwd-uzun",
+    "slug": "t10f-v1-rwd-uzun",
+    "name": "T10F V1 RWD Uzun Menzil",
+    "brand": "Togg",
+    "priceTry": 2195600,
     "rangeKm": null,
     "batteryKwh": null,
     "dcKw": null,
     "charge10to80Min": null,
     "warranty": null,
-    "source": { "name": null, "url": null },
-    "updatedAt": null
+    "rangeNote": null,
+    "chargeNote": null,
+    "motorNote": null,
+    "note": "Fiyat listesi bu sürümün menzilini ve bataryasını yazmıyor. Ürün sayfasındaki “623 km’ye varan” ifade bir üst sınır; bu sürümün adı yanında durmadığı için menzil hücresi boş bırakıldı. Teslim fiyatına ÖTV, KDV, MTV, plaka ve tescil dahil; trafik sigortası ve kasko değil.",
+    "source": {
+      "name": "Togg, T10F fiyat listesi, 15 Haziran 2026",
+      "url": "https://www.togg.com.tr/t10f-price-list"
+    },
+    "sources": [
+      {
+        "name": "Togg, T10F fiyat listesi, 15 Haziran 2026",
+        "url": "https://www.togg.com.tr/t10f-price-list"
+      }
+    ],
+    "updatedAt": "2026-11-22"
   },
   {
-    "id": "model-c",
-    "slug": "model-c",
-    "name": "[Model C]",
-    "brand": "[Marka C]",
-    "priceTry": null,
+    "id": "t10f-v2-rwd-uzun",
+    "slug": "t10f-v2-rwd-uzun",
+    "name": "T10F V2 RWD Uzun Menzil",
+    "brand": "Togg",
+    "priceTry": 2370930,
+    "rangeKm": 610,
+    "batteryKwh": null,
+    "dcKw": 180,
+    "charge10to80Min": null,
+    "warranty": null,
+    "rangeNote": "Karma menzil, 18 inç jant",
+    "chargeNote": "28 dk, yüzde 20’den 80’e, 180 kW DC",
+    "motorNote": "160 kW",
+    "note": "Fiyat, 15 Haziran 2026 listesindeki V2 RWD Uzun Menzil satırı. Menzil ve şarj, medya merkezindeki T10F V2 kartından. Kart yüzde 10’dan 80’e süreyi yazmıyor. Teslim fiyatına ÖTV, KDV, MTV, plaka ve tescil dahil; trafik sigortası ve kasko değil.",
+    "source": {
+      "name": "Togg, T10F fiyat listesi, 15 Haziran 2026",
+      "url": "https://www.togg.com.tr/t10f-price-list"
+    },
+    "sources": [
+      {
+        "name": "Togg, T10F fiyat listesi, 15 Haziran 2026",
+        "url": "https://www.togg.com.tr/t10f-price-list"
+      },
+      {
+        "name": "Togg Medya Merkezi, T10F V2 teknik kart",
+        "url": "https://mediacenter.togg.com.tr/tr/t10f"
+      }
+    ],
+    "updatedAt": "2026-11-22"
+  },
+  {
+    "id": "t10f-v2-4more",
+    "slug": "t10f-v2-4more",
+    "name": "T10F V2 4More",
+    "brand": "Togg",
+    "priceTry": 3217937,
+    "rangeKm": 523,
+    "batteryKwh": null,
+    "dcKw": null,
+    "charge10to80Min": null,
+    "warranty": null,
+    "rangeNote": "WLTP",
+    "chargeNote": null,
+    "motorNote": "Çift motor 320 kW, 700 Nm, 0-100 km/s 4,1 saniye, dört çeker",
+    "note": "523 km, ürün sayfasında 4More bloğunda WLTP diye duruyor. 320 kW motor gücüdür; DC şarj gücü diye yazılmadı. Batarya kapasitesi o blokta yok. Teslim fiyatına ÖTV, KDV, MTV, plaka ve tescil dahil; trafik sigortası ve kasko değil.",
+    "source": {
+      "name": "Togg, T10F fiyat listesi, 15 Haziran 2026",
+      "url": "https://www.togg.com.tr/t10f-price-list"
+    },
+    "sources": [
+      {
+        "name": "Togg, T10F fiyat listesi, 15 Haziran 2026",
+        "url": "https://www.togg.com.tr/t10f-price-list"
+      },
+      {
+        "name": "Togg, T10F ürün sayfası, 4More bloğu",
+        "url": "https://www.togg.com.tr/t10f"
+      }
+    ],
+    "updatedAt": "2026-11-22"
+  },
+  {
+    "id": "hyundai-inster",
+    "slug": "hyundai-inster",
+    "name": "Hyundai INSTER",
+    "brand": "Hyundai",
+    "priceTry": 1520000,
     "rangeKm": null,
     "batteryKwh": null,
     "dcKw": null,
     "charge10to80Min": null,
     "warranty": null,
-    "source": { "name": null, "url": null },
-    "updatedAt": null
+    "rangeNote": null,
+    "chargeNote": null,
+    "motorNote": null,
+    "note": "Sayfa bunu başlangıç fiyatı diye yazıyor; sürüm adı yok. Aynı sayfadaki menzil cümleleri birbiriyle çelişiyor ve Türkiye’deki araçtan farklı olabileceği uyarısı var. Bu yüzden menzil, batarya ve şarj boş.",
+    "source": {
+      "name": "Hyundai Motor Türkiye, INSTER sayfası",
+      "url": "https://www.hyundai.com/tr/tr/modeller/inster.html"
+    },
+    "sources": [
+      {
+        "name": "Hyundai Motor Türkiye, INSTER sayfası",
+        "url": "https://www.hyundai.com/tr/tr/modeller/inster.html"
+      }
+    ],
+    "updatedAt": "2026-11-22"
+  },
+  {
+    "id": "citroen-e-c3-max",
+    "slug": "citroen-e-c3-max",
+    "name": "Citroën ë-C3 Max",
+    "brand": "Citroën",
+    "priceTry": 1605000,
+    "rangeKm": null,
+    "batteryKwh": null,
+    "dcKw": null,
+    "charge10to80Min": null,
+    "warranty": null,
+    "rangeNote": null,
+    "chargeNote": null,
+    "motorNote": "83 kW",
+    "note": "Kasım ayına özel avantajlı fiyat. Liste fiyatı 1.725.000 TL. Liste 30 Kasım 2026’ya kadar geçerli; satın alma anındaki fiyat esas, kampanya stokla sınırlı. Trafik sigortası ve ilk tescildeki binde 2 harç dahil değil. Plus sürümünün liste fiyatı 1.645.000 TL; o satırda Kasım fiyatı yok.",
+    "source": {
+      "name": "Citroën Türkiye, elektrikli ë-C3 fiyat listesi",
+      "url": "https://talep.citroen.com.tr/fiyat-listesi/arac/yeni-ec3"
+    },
+    "sources": [
+      {
+        "name": "Citroën Türkiye, elektrikli ë-C3 fiyat listesi",
+        "url": "https://talep.citroen.com.tr/fiyat-listesi/arac/yeni-ec3"
+      }
+    ],
+    "updatedAt": "2026-11-22"
+  },
+  {
+    "id": "fiat-grande-panda-elektrikli",
+    "slug": "fiat-grande-panda-elektrikli",
+    "name": "Fiat Grande Panda Elektrikli",
+    "brand": "Fiat",
+    "priceTry": 1609900,
+    "rangeKm": 320,
+    "batteryKwh": 44,
+    "dcKw": null,
+    "charge10to80Min": null,
+    "warranty": null,
+    "rangeNote": "WLTP ortalama, elektrikli versiyon",
+    "chargeNote": null,
+    "motorNote": "83 kW (113 HP)",
+    "note": "1.609.900 TL başlangıç fiyatı, 2 Kasım–1 Aralık 2026 kampanyası ve stokla sınırlı. 200.000 TL’lik %0 faizli krediyle birlikte kullanılamaz. Kampanya sayfası sürüm adı yazmıyor. 44 kWh, 83 kW ve 320 km, model sayfasındaki elektrikli versiyona ait.",
+    "source": {
+      "name": "Fiat Türkiye, Grande Panda Elektrikli kampanyası",
+      "url": "https://www.fiat.com.tr/kampanyalar/satis/grande-panda-pozitif-enerji-her-anda"
+    },
+    "sources": [
+      {
+        "name": "Fiat Türkiye, Grande Panda Elektrikli kampanyası",
+        "url": "https://www.fiat.com.tr/kampanyalar/satis/grande-panda-pozitif-enerji-her-anda"
+      },
+      {
+        "name": "Fiat Türkiye, Grande Panda model sayfası",
+        "url": "https://www.fiat.com.tr/modeller/grande-panda"
+      }
+    ],
+    "updatedAt": "2026-11-22"
+  },
+  {
+    "id": "kia-ev2-cool",
+    "slug": "kia-ev2-cool",
+    "name": "Kia EV2 Cool",
+    "brand": "Kia",
+    "priceTry": 1749000,
+    "rangeKm": null,
+    "batteryKwh": null,
+    "dcKw": null,
+    "charge10to80Min": null,
+    "warranty": "2 yıl veya 60.000 km yasal; toplam 5 yıl veya 150.000 km Kia özel güvence, hangisi önce dolarsa",
+    "rangeNote": null,
+    "chargeNote": null,
+    "motorNote": "107,8 kW",
+    "note": "Kampanyalı anahtar teslim fiyat. Liste fiyatı 1.819.000 TL, kampanya desteği 70.000 TL. Liste 14 Kasım 2026’dan itibaren, yenisi çıkana kadar geçerli; kampanyalı fiyat katılan yetkili satıcılarda. İlk tescildeki binde 2 harç dahil değil. Plaka örneği İstanbul; trafik sigortası plaka giderinde yok. Menzil bu listede yok.",
+    "source": {
+      "name": "Kia Türkiye, EV2 Kasım 2026 fiyat listesi",
+      "url": "https://www.kia.com/tr/modeller/ev2/fiyat-listesi.html"
+    },
+    "sources": [
+      {
+        "name": "Kia Türkiye, EV2 Kasım 2026 fiyat listesi",
+        "url": "https://www.kia.com/tr/modeller/ev2/fiyat-listesi.html"
+      }
+    ],
+    "updatedAt": "2026-11-22"
+  },
+  {
+    "id": "opel-corsa-elektrik-gs",
+    "slug": "opel-corsa-elektrik-gs",
+    "name": "Opel Corsa Elektrik GS",
+    "brand": "Opel",
+    "priceTry": 1890000,
+    "rangeKm": null,
+    "batteryKwh": null,
+    "dcKw": null,
+    "charge10to80Min": null,
+    "warranty": null,
+    "rangeNote": null,
+    "chargeNote": null,
+    "motorNote": "100 kW",
+    "note": "2026 model, 22 Kasım 2026 fiyat listesi. 100 kW motor gücüdür. Tavsiye edilen anahtar teslim fiyat; bayi kendi fiyatını belirleyebilir. İlk tescildeki binde 2 harç ve trafik sigortası dahil değil. Menzil ve batarya bu satırda yok.",
+    "source": {
+      "name": "Opel Türkiye, 22 Kasım 2026 fiyat listesi",
+      "url": "https://fiyatlisteleri.opel.com.tr/Assets/files/Opel_Tum_Modeller_Fiyat_Listesi22.11.2026.pdf"
+    },
+    "sources": [
+      {
+        "name": "Opel Türkiye, 22 Kasım 2026 fiyat listesi",
+        "url": "https://fiyatlisteleri.opel.com.tr/Assets/files/Opel_Tum_Modeller_Fiyat_Listesi22.11.2026.pdf"
+      }
+    ],
+    "updatedAt": "2026-11-22"
+  },
+  {
+    "id": "opel-frontera-elektrik-44",
+    "slug": "opel-frontera-elektrik-44",
+    "name": "Opel Frontera Elektrik 44 kWh GS",
+    "brand": "Opel",
+    "priceTry": 1895000,
+    "rangeKm": null,
+    "batteryKwh": 44,
+    "dcKw": null,
+    "charge10to80Min": null,
+    "warranty": null,
+    "rangeNote": null,
+    "chargeNote": null,
+    "motorNote": null,
+    "note": "2026 model tavsiye edilen anahtar teslim fiyat. Başlık, metalik renk, siyah tavan ve konfor paketini ücretsiz diye yazıyor. Bayi kendi fiyatını belirleyebilir. İlk tescildeki binde 2 harç ve trafik sigortası dahil değil. Menzil ve motor gücü bu satırda yok.",
+    "source": {
+      "name": "Opel Türkiye, Frontera Elektrik fiyat listesi",
+      "url": "https://fiyatlisteleri.opel.com.tr/arac/frontera-elektrik"
+    },
+    "sources": [
+      {
+        "name": "Opel Türkiye, Frontera Elektrik fiyat listesi",
+        "url": "https://fiyatlisteleri.opel.com.tr/arac/frontera-elektrik"
+      }
+    ],
+    "updatedAt": "2026-11-22"
   }
 ]

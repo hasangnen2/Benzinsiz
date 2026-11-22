@@ -24,7 +24,7 @@
     "home": "Elektrikli araç haberleri, satın alma rehberleri ve kaynaklı karşılaştırmalar. Rakam, veri dosyasına girilmeden yayımlanmaz.",
     "haber": "Elektrikli araç haberleri. Başlık, metinle aynıdır; rakam ancak kaynakla yazılır.",
     "rehber": "Satın alma, şarj ve menzil rehberleri. Adımlar kaynak bekleyen yerde köşeli parantez kullanır.",
-    "karsilastir": "Kayıtlı araçların fiyat, menzil, batarya, DC güç, 10-80% süre ve garanti satırları. Boş alan köşeli parantezdir.",
+    "karsilastir": "Kasım 2026 resmi listelerinden farklı elektrikli modeller. Fiyat her markanın anahtar teslim tanımıdır. Menzil yoksa hücre boş kalır.",
     "arac": "Şarj maliyeti, mola sayısı ve yakıt gideri. Ev tarifesi ile benzin ve motorin resmi kayıttan okunur. İstasyon ve pompa fiyatı senden gelirse o kullanılır.",
     "hesaplayici": "100 km şarj maliyeti, sayaç tüketimi ile TL/kWh fiyatının çarpımıdır. Ev fiyatı 4 Nisan 2026 EPDK tablosundan gelir. İstasyon fiyatını sen yazarsın.",
     "rota": "Şarj molası, mesafe ve kullanılabilir menzille hesaplanır. Varışta kalan kilometre de görünür. Broşür menzili ve şarj noktası araması yok.",

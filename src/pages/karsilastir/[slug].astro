@@ -4,7 +4,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import { allComparisons, comparisonUpdated, formatKm, formatKw, formatKwh, formatMinutes, formatTry, situationFor } from '../../lib/comparisons';
 import { formatDate, istanbulIso } from '../../lib/dates';
-import type { Car } from '../../lib/comparisons';
+import type { Car, CarSource } from '../../lib/comparisons';
 
 export function getStaticPaths() {
   return allComparisons().map((pair) => ({ params: { slug: pair.slug }, props: { slug: pair.slug } }));
@@ -19,24 +19,37 @@ const crumbs = [
   { name: pair.title, href: pair.href },
 ];
 
+function sourcesOf(car: Car): CarSource[] {
+  const list = car.sources?.filter((item) => item.name) ?? [];
+  if (list.length) return list;
+  return car.source?.name ? [car.source] : [];
+}
+
+function withNote(value: string | null, note: string | null | undefined) {
+  if (!value) return null;
+  return note ? `${value} (${note})` : value;
+}
+
 const rows: { label: string; placeholder: string; render: (car: Car) => string | null }[] = [
   { label: 'Fiyat', placeholder: 'fiyat', render: (car) => (car.priceTry == null ? null : formatTry(car.priceTry)) },
-  { label: 'Menzil', placeholder: 'menzil', render: (car) => (car.rangeKm == null ? null : formatKm(car.rangeKm)) },
+  { label: 'Menzil', placeholder: 'menzil', render: (car) => withNote(car.rangeKm == null ? null : formatKm(car.rangeKm), car.rangeNote) },
   { label: 'Batarya', placeholder: 'batarya kWh', render: (car) => (car.batteryKwh == null ? null : formatKwh(car.batteryKwh)) },
+  { label: 'Motor', placeholder: 'motor gücü', render: (car) => car.motorNote || null },
   { label: 'DC şarj', placeholder: 'DC kW', render: (car) => (car.dcKw == null ? null : formatKw(car.dcKw)) },
   { label: '10-80% süre', placeholder: '10-80% süre', render: (car) => (car.charge10to80Min == null ? null : formatMinutes(car.charge10to80Min)) },
+  { label: 'Şarj, kaynakta', placeholder: 'şarj penceresi', render: (car) => car.chargeNote || null },
   { label: 'Garanti', placeholder: 'garanti', render: (car) => car.warranty },
 ];
 ---
 
 <BaseLayout title={pair.title} description={pair.description} crumbs={crumbs} updatedAt={updated ?? undefined}>
-  <main id="icerik" class="wrap py-8" tabindex="-1" data-pagefind-body>
+  <main id="icerik" class="compare wrap py-8" tabindex="-1" data-pagefind-body>
     <Breadcrumb crumbs={crumbs} />
     <p class="tag m-0">Karşılaştırma</p>
-    <h1 class="mt-2 mb-3 font-serif text-[2rem] leading-tight sm:text-4xl">{pair.title}</h1>
-    <p class="max-w-[68ch] text-muted">{pair.description}</p>
-    <p class="text-sm text-meta">
-      Güncelleme:
+    <h1 class="mt-2 mb-3">{pair.title}</h1>
+    <p class="compare-lead">{pair.description} Her fiyat, kendi kaynağındaki anahtar teslim tanımdır. Dahil olmayan kalem araç notunda yazar.</p>
+    <p class="compare-note">
+      Güncelleme:{' '}
       {updated ? <time datetime={istanbulIso(updated)}>{formatDate(updated)}</time> : <Placeholder label="güncelleme tarihi" />}
     </p>
     <div class="grid gap-5 md:grid-cols-2">
@@ -44,10 +57,11 @@ const rows: { label: string; placeholder: string; render: (car: Car) => string |
         [pair.a, pair.b].map((car) => (
           <article class="card p-6">
             <p class="tag m-0">{car.brand}</p>
-            <h2 class="mt-2 mb-3 font-serif text-3xl">{car.name}</h2>
-            <dl class="m-0 grid gap-2">
+            <h2 class="mt-2 mb-3">{car.name}</h2>
+            {car.note && <p class="compare-note">{car.note}</p>}
+            <dl class="compare-facts">
               {rows.map((row) => (
-                <div class="flex justify-between gap-4 border-b border-line py-2">
+                <div>
                   <dt>{row.label}</dt>
                   <dd class="m-0 text-right">{row.render(car) ?? <Placeholder label={row.placeholder} />}</dd>
                 </div>
@@ -57,7 +71,7 @@ const rows: { label: string; placeholder: string; render: (car: Car) => string |
         ))
       }
     </div>
-    <h2 class="mt-10 font-serif text-3xl">Ölçüt tablosu</h2>
+    <h2 class="mt-10">Ölçüt tablosu</h2>
     <div class="overflow-x-auto">
       <table class="specs">
         <caption class="sr-only">{pair.a.name} ve {pair.b.name} ölçütleri</caption>
@@ -81,7 +95,7 @@ const rows: { label: string; placeholder: string; render: (car: Car) => string |
         </tbody>
       </table>
     </div>
-    <h2 class="mt-10 font-serif text-3xl">Şu durumda</h2>
+    <h2 class="mt-10">Şu durumda</h2>
     <div class="grid gap-5 md:grid-cols-2">
       {
         [
@@ -89,27 +103,29 @@ const rows: { label: string; placeholder: string; render: (car: Car) => string |
           { car: pair.b, other: pair.a },
         ].map((side) => (
           <section class="card p-6">
-            <h3 class="mt-0 font-serif text-2xl">Şu durumda {side.car.name}</h3>
-            <ul>
+            <h3 class="mt-0">Şu durumda {side.car.name}</h3>
+            <ul class="compare-list">
               {situationFor(side.car, side.other).map((line) => <li>{line}</li>)}
             </ul>
           </section>
         ))
       }
     </div>
-    <h2 class="mt-10 font-serif text-3xl">Kaynaklar</h2>
-    <ul>
+    <h2 class="mt-10">Kaynaklar</h2>
+    <ul class="compare-list">
       {
-        [pair.a, pair.b].map((car) => (
-          <li>
-            {car.name}:{' '}
-            {car.source.name ? (
-              car.source.url ? <a href={car.source.url} rel="noopener noreferrer">{car.source.name}</a> : <span>{car.source.name} · <Placeholder label="URL" /></span>
-            ) : (
-              <Placeholder label="kaynak" />
-            )}
-          </li>
-        ))
+        [pair.a, pair.b].flatMap((car) => {
+          const sources = sourcesOf(car);
+          if (!sources.length) {
+            return [<li>{car.name}: <Placeholder label="kaynak" /></li>];
+          }
+          return sources.map((source) => (
+            <li>
+              {car.name}:{' '}
+              {source.url ? <a href={source.url} rel="noopener noreferrer">{source.name}</a> : <span>{source.name}</span>}
+            </li>
+          ));
+        })
       }
     </ul>
     <p>Karşılaştırma, kayıtlı araç verisinden üretildi. Genel bir kazanan seçilmez; her cümle tek ölçüte aittir.</p>

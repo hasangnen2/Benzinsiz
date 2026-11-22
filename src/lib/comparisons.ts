@@ -17,7 +17,12 @@ export interface Car {
   dcKw: number | null;
   charge10to80Min: number | null;
   warranty: string | null;
+  rangeNote?: string | null;
+  chargeNote?: string | null;
+  motorNote?: string | null;
+  note?: string | null;
   source: CarSource;
+  sources?: CarSource[];
   updatedAt: string | null;
 }
 
@@ -64,11 +69,20 @@ export function allComparisons(list = cars): ComparisonPair[] {
         slug,
         href: `/karsilastir/${slug}`,
         title: `${a.name} ve ${b.name} karşılaştırması`,
-        description: 'Fiyat, menzil, batarya, DC güç, 10-80% süre ve garanti. Boş alan köşeli parantezdir; rakam üretilmez.',
+        description: 'Anahtar teslim fiyat, her markanın kendi Kasım 2026 listesinden. Menzil yalnızca sürüm adıyla yazan sayfadan. 10-80 süresi yoksa boş kalır.',
       });
     }
   }
-  return pairs;
+  const filled = (car: Car) =>
+    [car.priceTry, car.rangeKm, car.batteryKwh, car.dcKw, car.charge10to80Min, car.motorNote, car.chargeNote].filter(
+      (value) => value != null && value !== '',
+    ).length;
+  const priceOf = (car: Car) => car.priceTry ?? Number.POSITIVE_INFINITY;
+  return pairs.sort((left, right) => {
+    const byPrice = Math.min(priceOf(left.a), priceOf(left.b)) - Math.min(priceOf(right.a), priceOf(right.b));
+    if (byPrice !== 0) return byPrice;
+    return filled(right.a) + filled(right.b) - (filled(left.a) + filled(left.b));
+  });
 }
 
 export function comparisonUpdated(pair: ComparisonPair) {
@@ -96,6 +110,12 @@ export function situationFor(subject: Car, other: Car) {
     if (left == null || right == null) continue;
     const subjectText = metric.format(left);
     const otherText = metric.format(right);
+    if (metric.key === 'rangeKm' && subject.rangeNote !== other.rangeNote) {
+      const leftNote = subject.rangeNote ? ` (${subject.rangeNote})` : '';
+      const rightNote = other.rangeNote ? ` (${other.rangeNote})` : '';
+      notes.push(`Menzil aynı ölçüm etiketiyle yazılmıyor: ${subjectText}${leftNote}. Karşı kayıt ${otherText}${rightNote}. Bu yüzden menzilde öne geçen seçilmez.`);
+      continue;
+    }
     if (left === right) {
       notes.push(`${metric.label} ölçütünde iki kayıt aynı: ${subjectText}.`);
       continue;
