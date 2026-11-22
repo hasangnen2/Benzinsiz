@@ -36,7 +36,7 @@ function externalLinks(affiliate: boolean) {
       rel.add('noreferrer');
       if (affiliate) rel.add('sponsored');
       node.properties ??= {};
-      node.properties.rel = [...rel].join(' ');
+      node.properties.rel = [...rel];
     });
   };
 }

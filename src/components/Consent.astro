@@ -53,8 +53,9 @@
   }
 
   function idle(run: () => void) {
-    if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 2500 });
-    else window.setTimeout(run, 1200);
+    const browser = window as Window & { requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => void };
+    if (browser.requestIdleCallback) browser.requestIdleCallback(run, { timeout: 2500 });
+    else browser.setTimeout(run, 1200);
   }
 
   function loadAnalytics(choice: Choice) {

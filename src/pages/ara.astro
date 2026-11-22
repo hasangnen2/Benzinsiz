@@ -44,7 +44,12 @@ const crumbs = [
     }
     status.textContent = 'Aranıyor.';
     try {
-      const pagefind = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+      // @ts-expect-error Pagefind dosyası derlemede oluşur, geliştirme sunucusunda yoktur.
+      const pagefind = (await import(/* @vite-ignore */ '/pagefind/pagefind.js')) as {
+        search: (query: string) => Promise<{
+          results: { data: () => Promise<{ url: string; meta?: { title?: string }; excerpt?: string }> }[];
+        }>;
+      };
       const search = await pagefind.search(value);
       list.replaceChildren();
       if (!search.results.length) {

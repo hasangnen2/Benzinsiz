@@ -4,11 +4,22 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
 export function getStaticPaths() {
   return [
     { params: { panel: 'yazilar' }, props: { title: 'Yazılar' } },
+    { params: { panel: 'sayfalar' }, props: { title: 'Sayfalar' } },
+    { params: { panel: 'kategoriler' }, props: { title: 'Kategoriler' } },
+    { params: { panel: 'medya' }, props: { title: 'Medya' } },
     { params: { panel: 'tarifeler' }, props: { title: 'Tarifeler' } },
     { params: { panel: 'araclar' }, props: { title: 'Araçlar' } },
     { params: { panel: 'yazarlar' }, props: { title: 'Kadrolar' } },
     { params: { panel: 'yonlendirmeler' }, props: { title: 'Yönlendirmeler' } },
+    { params: { panel: 'menu' }, props: { title: 'Menü ve footer' } },
+    { params: { panel: 'seo' }, props: { title: 'SEO' } },
+    { params: { panel: 'reklam' }, props: { title: 'Reklam' } },
+    { params: { panel: 'bulten' }, props: { title: 'Bülten' } },
+    { params: { panel: 'analitik' }, props: { title: 'Analitik' } },
     { params: { panel: 'sss' }, props: { title: 'Sorular' } },
+    { params: { panel: 'kullanicilar' }, props: { title: 'Kullanıcılar' } },
+    { params: { panel: 'yedekler' }, props: { title: 'Yedekler' } },
+    { params: { panel: 'gunluk' }, props: { title: 'Etkinlik günlüğü' } },
     { params: { panel: 'ayarlar' }, props: { title: 'Ayarlar' } },
   ];
 }

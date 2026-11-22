@@ -11,7 +11,8 @@
     "preview": "astro preview --host 127.0.0.1",
     "validate": "node scripts/validate.mjs",
     "assets": "node scripts/generate-assets.mjs",
-    "check": "astro check"
+    "check": "astro check",
+    "test": "node --test scripts/admin-rules.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.1.6",

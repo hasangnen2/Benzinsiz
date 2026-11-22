@@ -1,0 +1,48 @@
+{
+  "header": [
+    { "href": "/haber", "label": "Haberler" },
+    { "href": "/rehber", "label": "Rehberler" },
+    { "href": "/kategori/inceleme", "label": "İncelemeler" },
+    { "href": "/karsilastir", "label": "Karşılaştırma" },
+    { "href": "/kategori/sarj", "label": "Şarj" },
+    { "href": "/arac", "label": "Araçlar" }
+  ],
+  "footer": [
+    {
+      "title": "Kategoriler",
+      "links": [
+        { "href": "/haber", "label": "Haberler" },
+        { "href": "/rehber", "label": "Rehberler" },
+        { "href": "/kategori/inceleme", "label": "İncelemeler" },
+        { "href": "/karsilastir", "label": "Karşılaştırma" },
+        { "href": "/kategori/sarj", "label": "Şarj" },
+        { "href": "/kategori/menzil", "label": "Menzil" },
+        { "href": "/kategori/maliyet", "label": "Maliyet" },
+        { "href": "/kategori/alim", "label": "Satın alma" },
+        { "href": "/kategori/modeller", "label": "Modeller" },
+        { "href": "/kategori/mevzuat", "label": "Mevzuat" },
+        { "href": "/kategori/bakim", "label": "Bakım" }
+      ]
+    },
+    {
+      "title": "Kurumsal",
+      "links": [
+        { "href": "/hakkimizda", "label": "Hakkımızda" },
+        { "href": "/kunye", "label": "Künye" },
+        { "href": "/yazar", "label": "Editör kadrosu" },
+        { "href": "/yayin-ilkeleri", "label": "Yayın ilkeleri" },
+        { "href": "/duzeltme-politikasi", "label": "Düzeltme politikası" },
+        { "href": "/iletisim", "label": "İletişim" }
+      ]
+    },
+    {
+      "title": "Yasal",
+      "links": [
+        { "href": "/gizlilik", "label": "Gizlilik politikası" },
+        { "href": "/cerez-politikasi", "label": "Çerez politikası" },
+        { "href": "/kvkk", "label": "KVKK aydınlatma metni" },
+        { "href": "/reklam-politikasi", "label": "Reklam ve sponsorlu içerik" }
+      ]
+    }
+  ]
+}

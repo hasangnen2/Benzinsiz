@@ -1,4 +1,5 @@
 import authorsJson from '../data/authors.json';
+import navigationJson from '../data/navigation.json';
 import settingsJson from '../data/settings.json';
 import { categories, categoryBySlug, type CategorySlug } from '../data/categories';
 
@@ -85,14 +86,8 @@ export function integrations() {
   };
 }
 
-export const nav = [
-  { href: '/haber', label: 'Haberler' },
-  { href: '/rehber', label: 'Rehberler' },
-  { href: '/kategori/inceleme', label: 'İncelemeler' },
-  { href: '/karsilastir', label: 'Karşılaştırma' },
-  { href: '/kategori/sarj', label: 'Şarj' },
-  { href: '/arac', label: 'Araçlar' },
-] as const;
+export const nav = navigationJson.header;
+export const footerColumns = navigationJson.footer;
 
 export function typeLabel(type: string) {
   if (type === 'haber') return 'Haber';
